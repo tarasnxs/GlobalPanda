@@ -148,7 +148,7 @@ public class MainController {
         //list.add(inventory);
         list.add(viewOrders);
         list.add(employeesTab);
-        list.add(schedule);
+        //list.add(schedule);
         list.add(gasStations);
         list.add(balance);
         list.add(graphs);
