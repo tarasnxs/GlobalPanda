@@ -1,0 +1,31 @@
+Сихів
+Тарас Гродзіцький
+Applicaton is started
+initialized
+4
+Tab added
+Tab added
+Tab added
+Tab added
+fillTotalSheet
+fillConsumptionSheet
+fillPurchaseSheet
+fillShiftSheet
+fillRozrobkaSheet
+fillProdSheet
+fillIngredientSheet
+fillProdIngSheet
+fillTehcardSheet
+fillTotalSheet
+fillConsumptionSheet
+Exception in thread "JavaFX Application Thread" java.lang.OutOfMemoryError: Java heap space
+	at com.sun.javafx.tk.Toolkit.firePulse(Toolkit.java:369)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:510)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:490)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$404(QuantumToolkit.java:319)
+	at com.sun.javafx.tk.quantum.QuantumToolkit$$Lambda$43/3577208.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$39/9288747.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)

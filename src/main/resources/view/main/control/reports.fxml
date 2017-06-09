@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.pandasushi.controller.control.reports.ReportsController">
+   <children>
+      <HBox fx:id="datesBox" alignment="CENTER" prefWidth="900.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+         </children>
+      </HBox>
+      <Button fx:id="ordersReport" mnemonicParsing="false" text="Звіт по замовленнях" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="300.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <Button fx:id="purchaseReport" mnemonicParsing="false" text="Звіт по закупках" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="370.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <Button fx:id="inventoryReport" mnemonicParsing="false" text="Звіт по інвентаризації" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="440.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

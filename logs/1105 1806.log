@@ -1,0 +1,231 @@
+Сихів
+Тарас Гродзіцький
+Applicaton is started
+initialized
+4
+Tab added
+Tab added
+Tab added
+Tab added
+fillTotalSheet
+fillConsumptionSheet
+1024
+Downloading consumption for Тунець
+DishMap size = 38
+3123
+1088
+Downloading consumption for Вершки
+DishMap size = 38
+1706
+Downloading consumption for НФ Соус Альфредо
+DishMap size = 315
+3018
+1025
+Downloading consumption for Лосось копчений
+DishMap size = 382
+3055
+1028
+Downloading consumption for Перець болгарський
+DishMap size = 423
+1707
+Downloading consumption for НФ Соус Барбекю
+DishMap size = 730
+3085
+1029
+Downloading consumption for Сніжний краб
+DishMap size = 740
+3117
+1032
+Downloading consumption for Сир Мармуровий
+DishMap size = 741
+3100
+1033
+Downloading consumption for Мисливські Ковбаски 
+DishMap size = 741
+3064
+1034
+Downloading consumption for Сир Фета
+DishMap size = 765
+3105
+3106
+1035
+Downloading consumption for Олія оливкова
+DishMap size = 785
+1701
+Downloading consumption for НФ Тісто для піци
+DishMap size = 1470
+1702
+Downloading consumption for НФ Соус від Панди
+DishMap size = 1470
+1707
+Downloading consumption for НФ Соус Барбекю
+DishMap size = 1470
+3083
+3158
+1036
+Downloading consumption for Окунь червоний
+DishMap size = 1568
+3080
+1038
+Downloading consumption for Мюнхенські Ковбаски 
+DishMap size = 1568
+3072
+1039
+Downloading consumption for Маслини
+DishMap size = 1568
+3060
+1041
+Downloading consumption for Ананас Консервований
+DishMap size = 1569
+3140
+1042
+Downloading consumption for Оливки
+DishMap size = 1571
+3081
+1044
+Downloading consumption for Артишок
+DishMap size = 1571
+3005
+1045
+Downloading consumption for Каперси
+DishMap size = 1571
+3033
+1046
+Downloading consumption for Сир Дорблю
+DishMap size = 1572
+3099
+1049
+Downloading consumption for Салат Чука
+DishMap size = 1581
+3131
+1053
+Downloading consumption for Сир тостовий
+DishMap size = 1611
+3103
+1056
+Downloading consumption for Тунець консервований
+DishMap size = 1611
+3124
+3160
+1060
+Downloading consumption for Імбир
+DishMap size = 1862
+3152
+1001
+Downloading consumption for Рис
+DishMap size = 1862
+1709
+Downloading consumption for НФ Рис для суші
+DishMap size = 3316
+3095
+1065
+Downloading consumption for Мамінорі
+DishMap size = 3318
+3058
+1002
+Downloading consumption for Норі
+DishMap size = 3318
+3074
+1003
+Downloading consumption for Сир Моцарела
+DishMap size = 3322
+3159
+1004
+Downloading consumption for Борошно
+DishMap size = 3322
+1701
+Downloading consumption for НФ Тісто для піци
+DishMap size = 3322
+3009
+1005
+Downloading consumption for Сир Філадельфія
+DishMap size = 3685
+3107
+1009
+Downloading consumption for Лосось
+DishMap size = 3691
+1010
+Downloading consumption for Печериці
+DishMap size = 3693
+3089
+1074
+Downloading consumption for Бринза
+DishMap size = 3693
+3011
+1075
+Downloading consumption for Васабі порошок
+DishMap size = 3693
+1713
+Downloading consumption for НФ Васабі
+DishMap size = 4546
+3016
+1012
+Downloading consumption for Тобіко червоне
+DishMap size = 4561
+3120
+3121
+1076
+Downloading consumption for Kikkoman Концентрат
+DishMap size = 4561
+1708
+Downloading consumption for НФ Соус соєвий для суші
+DishMap size = 5386
+3001
+1078
+Downloading consumption for Помідори Пелатті
+DishMap size = 5386
+1702
+Downloading consumption for НФ Соус від Панди
+DishMap size = 5386
+3092
+1015
+Downloading consumption for Бекон
+DishMap size = 5388
+3008
+1016
+Downloading consumption for Копчене куряче філе
+DishMap size = 5392
+3042
+1017
+Downloading consumption for Вугор
+DishMap size = 5392
+1703
+Downloading consumption for НФ Соус Унагі
+DishMap size = 5410
+3022
+1019
+Downloading consumption for Ковбаса Папероні
+DishMap size = 5410
+3036
+1020
+Downloading consumption for Шинка
+DishMap size = 5410
+3132
+1021
+Downloading consumption for Сир Пармезан
+DishMap size = 5410
+1706
+Downloading consumption for НФ Соус Альфредо
+DishMap size = 5410
+3102
+1022
+Downloading consumption for Креветка
+DishMap size = 5410
+3157
+1023
+Downloading consumption for Кукурудза консервована
+DishMap size = 5410
+3161
+Exception in thread "JavaFX Application Thread" java.lang.OutOfMemoryError: Java heap space
+	at java.util.WeakHashMap.put(WeakHashMap.java:464)
+	at java.util.WeakHashMap.putAll(WeakHashMap.java:566)
+	at com.sun.javafx.tk.Toolkit.firePulse(Toolkit.java:374)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:510)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:490)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$404(QuantumToolkit.java:319)
+	at com.sun.javafx.tk.quantum.QuantumToolkit$$Lambda$43/31536815.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$39/3503822.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)

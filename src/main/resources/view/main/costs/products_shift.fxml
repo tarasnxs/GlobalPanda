@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.pandasushi.controller.costs.product_shift.ProductsShiftTabController">
+    <children>
+        <Button fx:id="addCheck" mnemonicParsing="false" text="Додати квитанцію" textFill="#009011" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+        <TabPane fx:id="productShiftTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0" />
+        <Button fx:id="makeReport" layoutX="100.0" layoutY="6.0" mnemonicParsing="false" text="Сформувати звіт" textFill="#005157" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="5.0" />
+      <Button fx:id="refresh" layoutX="126.0" layoutY="15.0" mnemonicParsing="false" text="Оновити" textFill="RED" AnchorPane.rightAnchor="245.0" AnchorPane.topAnchor="5.0" />
+    </children>
+</AnchorPane>

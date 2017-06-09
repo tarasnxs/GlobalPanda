@@ -1,0 +1,186 @@
+Сихів
+Тарас Гродзіцький
+Applicaton is started
+initialized
+5
+Tab added
+Tab added
+Tab added
+Tab added
+Tab added
+DUPLICATE ROZROBKA ON PRODUCT Норі *KS gold, 1уп/50шт -Норі -Норі
+fillTotalSheet
+java.lang.NullPointerException
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:518)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+null
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
+java.lang.IllegalArgumentException: The workbook already contains a sheet of this name
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:636)
+	at org.apache.poi.xssf.usermodel.XSSFWorkbook.createSheet(XSSFWorkbook.java:67)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.fillTotalSheet(InventoryReportTotal.java:164)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.makeExcel(InventoryReportTotal.java:152)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:53)
+	at ua.com.pandasushi.controller.kitchen.inventory.InventoryReportTotal.call(InventoryReportTotal.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)
+The workbook already contains a sheet of this name
