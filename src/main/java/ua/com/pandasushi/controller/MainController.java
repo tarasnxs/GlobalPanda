@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import ua.com.pandasushi.controller.control.employee.EmployeeController;
 import ua.com.pandasushi.controller.control.menu.MenuController;
 import ua.com.pandasushi.controller.control.reports.ReportsController;
+import ua.com.pandasushi.controller.control.schedule.ScheduleController;
 import ua.com.pandasushi.controller.costs.product_purchase.ProductsPurchaseTabController;
 import ua.com.pandasushi.controller.costs.product_shift.ProductsShiftTabController;
 import ua.com.pandasushi.controller.kitchen.inventory.InventoryTabController;
@@ -119,6 +120,9 @@ public class MainController {
     private ReportsController reportsTabController;
 
     @FXML
+    private ScheduleController scheduleTabController;
+
+    @FXML
     public void initialize() {
         employee = new EmployeeController();
         pandaOrder = new OrderController();
@@ -132,6 +136,7 @@ public class MainController {
         rozrobkaTabController.init(this);
         inventoryTabController.init(this);
         reportsTabController.init(this);
+        scheduleTabController.init(this);
         setTabAccess(GlobalPandaApp.config.getOperator());
     }
 

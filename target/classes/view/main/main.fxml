@@ -227,10 +227,9 @@
                             </Tab>
                               <Tab fx:id="schedule" text="Графік роботи">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children></AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0">
+                                           <fx:include fx:id="scheduleTab" source="control/schedule.fxml" />
+                                  </AnchorPane>
                                 </content>
                               </Tab>
                               <Tab fx:id="gasStations" text="Заправки">

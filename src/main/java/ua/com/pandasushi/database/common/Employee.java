@@ -1,5 +1,7 @@
 package ua.com.pandasushi.database.common;
 
+import ua.com.pandasushi.main.GlobalPandaApp;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -53,7 +55,7 @@ public class Employee implements Serializable {
 	private Boolean gpAccess;
 
 	public Employee() {
-		
+
 	}
 
 	public boolean isActive() {
