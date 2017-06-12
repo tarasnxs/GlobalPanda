@@ -1186,4 +1186,5 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             return getName();
         }
     }
+
 }
