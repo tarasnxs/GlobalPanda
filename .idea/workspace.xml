@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="108dfcf1-6e02-4282-b234-4ef8b22f620d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/common/Employee.class" afterPath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/common/Employee.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/common/Kitchens.class" afterPath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/common/Kitchens.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/site/dao/DAOSite.class" afterPath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/site/dao/DAOSite.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/site/dao/NewDAOSiteImpl.class" afterPath="$PROJECT_DIR$/target/classes/ua/com/pandasushi/database/site/dao/NewDAOSiteImpl.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java" afterPath="$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java" />
     </list>
     <ignored path="GlobalPanda.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path=".idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +30,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ScheduleController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DAOSite.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/site/dao/DAOSite.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -46,12 +40,23 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="ScheduleController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="37" column="57" lean-forward="true" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Kitchens.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/common/Kitchens.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="780">
-              <caret line="57" column="5" lean-forward="false" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
+            <state relative-caret-position="349">
+              <caret line="60" column="13" lean-forward="true" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="13" />
               <folding>
+                <element signature="e#1067#1068#0" expanded="true" />
                 <element signature="e#1099#1100#0" expanded="true" />
               </folding>
             </state>
@@ -68,6 +73,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="MainController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/MainController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="121">
+              <caret line="138" column="39" lean-forward="false" selection-start-line="138" selection-start-column="39" selection-end-line="138" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="RozrobkaTabController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/kitchen/rozrobka/RozrobkaTabController.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -78,7 +93,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NewDAOSiteImpl.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NewDAOSiteImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/site/dao/NewDAOSiteImpl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="486">
@@ -795,14 +810,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GlobalPanda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GlobalPanda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../orderv2.0" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Ignored.Files" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.idea" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.37126437" />
@@ -818,11 +847,11 @@
       <recent name="ua.com.pandasushi.desktop.controller.kitchen.rozrobka" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Workspace_IntelliJIDEA\GlobalPanda\src\main\java\ua\com\pandasushi\controller\control\schedule" />
       <recent name="D:\Workspace_IntelliJIDEA\GlobalPanda\src\main\java\ua\com\pandasushi\database\common" />
       <recent name="D:\Workspace_IntelliJIDEA\GlobalPanda\src\main\java\ua\com\pandasushi\database\site\dao" />
       <recent name="D:\Workspace_IntelliJIDEA\GlobalPanda\src\main\java\ua\com\pandasushi\database" />
       <recent name="D:\GlobalPanda\src\main\java\ua\com\pandasushi\desktop\database\common" />
-      <recent name="D:\GlobalPanda\src\main\deploy\package\windows" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ua.com.pandasushi.database.common" />
@@ -1052,7 +1081,14 @@
       <option name="project" value="LOCAL" />
       <updated>1497359837519</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="branch add">
+      <created>1497359862032</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1497359862032</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1066,7 +1102,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.403171" sideWeight="0.5021482" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2207304" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2982456" sideWeight="0.5706874" order="2" side_tool="false" content_ui="tabs" x="2" y="336" width="1862" height="359" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29784825" sideWeight="0.5706874" order="2" side_tool="false" content_ui="tabs" x="2" y="336" width="1862" height="359" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.403171" sideWeight="0.49785176" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25832438" sideWeight="0.4953917" order="0" side_tool="false" content_ui="combo" />
@@ -1556,14 +1592,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/target/.gitignore" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/MainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="138" column="39" lean-forward="false" selection-start-line="138" selection-start-column="39" selection-end-line="138" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/view/main/control/graphs.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1685,31 +1713,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/site/dao/DAOSite.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-861">
           <caret line="24" column="4" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/common/Kitchens.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="57" column="5" lean-forward="false" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
-          <folding>
-            <element signature="e#1099#1100#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1725,6 +1733,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
           <caret line="1272" column="13" lean-forward="true" selection-start-line="1272" selection-start-column="13" selection-end-line="1272" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/database/common/Kitchens.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="60" column="13" lean-forward="true" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="13" />
+          <folding>
+            <element signature="e#1067#1068#0" expanded="true" />
+            <element signature="e#1099#1100#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/MainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="138" column="39" lean-forward="false" selection-start-line="138" selection-start-column="39" selection-end-line="138" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ua/com/pandasushi/controller/control/schedule/ScheduleController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="37" column="57" lean-forward="true" selection-start-line="37" selection-start-column="57" selection-end-line="37" selection-end-column="57" />
           <folding />
         </state>
       </provider>
