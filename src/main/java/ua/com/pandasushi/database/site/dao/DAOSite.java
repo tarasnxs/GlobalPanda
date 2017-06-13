@@ -4,6 +4,7 @@ import ua.com.pandasushi.database.common.*;
 import ua.com.pandasushi.database.common.menu.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -15,19 +16,19 @@ public interface DAOSite extends Serializable {
     void update(Object o);
 
     void updateList(Collection list);
-
-    Integer updateImportance(Integer ingId, Integer kitchId, Integer value);
-
+    
     //Get all orders between from and to
     ArrayList<CustomersSite> getCustomers(Date from, Date to);
-
+    
     //Get orders from kitchen between from and to
     ArrayList<CustomersSite> getCustomers(Date from, Date to, Integer kitchen);
+    
+    Integer updateImportance(Integer ingId, Integer kitchId, Integer value);
 
     ArrayList<Float> getSumForType(Integer type);
 
     ArrayList<Operations> getReportProductPurchase();
-
+    
     ArrayList<Operations> getReportProductPurchase(Date date);
 
     ArrayList<Operations> getDebtPurchase(Integer checkId);
@@ -147,4 +148,19 @@ public interface DAOSite extends Serializable {
     ArrayList<INGREDIENTS> getIngredients();
 
     ArrayList<GROUPS_LIB> getGroups();
+    
+    ArrayList<Employee> getAllEmployees();
+    
+    ArrayList<Employee> getEmployeesForSchedule();
+    
+    ArrayList<Employee> getEmployeesForSchedule(Integer kitchId);
+    
+    ArrayList<Employee> getEmployeesForSchedule(String position);
+    
+    KitchProperties getKitchProperty(LocalDate date, Integer kitch);
+    
+    ArrayList<Schedule> getSchedule(Integer kitchId, LocalDate date, Boolean plan);
+    
+    ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan);
+    
 }

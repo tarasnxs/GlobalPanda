@@ -1,10 +1,11 @@
 package ua.com.pandasushi.database.common;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * Created by Тарас on 27.10.2016.
@@ -56,4 +57,10 @@ public class Kitchens implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+    
 }

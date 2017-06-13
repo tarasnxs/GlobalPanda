@@ -1,15 +1,7 @@
 package ua.com.pandasushi.database.common;
 
-import ua.com.pandasushi.main.GlobalPandaApp;
-
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "Employee")
@@ -29,6 +21,12 @@ public class Employee implements Serializable {
 
 	@Column(name = "POSITION")
 	private String position;
+	
+	@Column(name = "MARK")
+	private String mark;
+	
+	@Column(name = "KITCH_ID")
+	private Integer kitch_id;
 
 	@Column(name = "KITCHEN")
 	private String kitchen;
@@ -47,6 +45,9 @@ public class Employee implements Serializable {
 	
 	@Column(name = "ACTIVE")
 	private boolean active;
+	
+	@Column(name = "LOGIN")
+	private String login;
 
 	@Column(name = "PASSWORD")
 	private String password;
@@ -55,7 +56,7 @@ public class Employee implements Serializable {
 	private Boolean gpAccess;
 
 	public Employee() {
-
+		
 	}
 
 	public boolean isActive() {
@@ -142,4 +143,30 @@ public class Employee implements Serializable {
 	public void setGpAccess(boolean gpAccess) {
 		this.gpAccess = gpAccess;
 	}
+
+	public String getMark() {
+		return mark;
+	}
+
+	public void setMark(String mark) {
+		this.mark = mark;
+	}
+
+	public Integer getKitch_id() {
+		return kitch_id;
+	}
+
+	public void setKitch_id(Integer kitch_id) {
+		this.kitch_id = kitch_id;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
+	
 }

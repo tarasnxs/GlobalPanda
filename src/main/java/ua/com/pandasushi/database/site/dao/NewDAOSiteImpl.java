@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -1233,6 +1234,139 @@ public class NewDAOSiteImpl implements DAOSite {
         command.setArguments(new Object[]{});
         try {
             result = (ArrayList<GROUPS_LIB>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getAllEmployees() {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule() {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule(Integer kitchId) {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class});
+        command.setArguments(new Object[]{kitchId});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule(String position) {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{String.class});
+        command.setArguments(new Object[]{position});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public KitchProperties getKitchProperty(LocalDate date, Integer kitch) {
+        KitchProperties result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, Integer.class});
+        command.setArguments(new Object[]{date, kitch});
+        try {
+            result = (KitchProperties) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getSchedule(Integer kitchId, LocalDate date, Boolean plan) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, LocalDate.class, Boolean.class});
+        command.setArguments(new Object[]{kitchId, date, plan});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, LocalDate.class, LocalDate.class, Boolean.class});
+        command.setArguments(new Object[]{employeeId, start, end, plan});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
