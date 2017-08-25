@@ -623,6 +623,14 @@ public class InventoryReport extends Task<Workbook> {
                     cell.setCellStyle(totalsCell);
                 }
 
+                for (Inventory toUpdate : cur) {
+                    int totalCalc = Math.round(totalPrevious + totalPurchase + totalShift + totalDiffRozrobka - totalConsumption);
+                    toUpdate.setCalculatedNetto(totalCalc);
+                    toUpdate.setDiffNetto(Math.round(difference) * -1);
+                    toUpdate.setDiffPercent(-100 * difference / totalConsumption);
+                    GlobalPandaApp.site.update(toUpdate);
+                }
+
                 totalSheet.createRow(index++);
             }
 
@@ -1055,8 +1063,8 @@ public class InventoryReport extends Task<Workbook> {
     public File saveFile(String initFileName) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(initFileName);
-        String userDir = System.getProperty("user.home");
-        fileChooser.setInitialDirectory(new File(userDir +"/Desktop"));
+        //String userDir = System.getProperty("user.home");
+        //fileChooser.setInitialDirectory(new File(userDir +"/Desktop"));
         fileChooser.setTitle("Зберегти звіт...");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);

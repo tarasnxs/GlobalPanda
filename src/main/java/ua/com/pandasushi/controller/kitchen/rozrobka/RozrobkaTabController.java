@@ -52,7 +52,7 @@ public class RozrobkaTabController implements TabController, EventHandler<Action
         this.main = main;
         add = new Button("Записати в БД");
         add.setFont(new Font("Calibri", 24));
-        add.setTextFill(Color.GREEN);
+        add.setTextFill(Color.DARKGREEN);
         add.setOnAction(this);
         makeReport.setOnAction(event -> {
             try {

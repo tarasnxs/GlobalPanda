@@ -2,6 +2,7 @@ package ua.com.pandasushi.controller.control.reports;
 
 import javafx.stage.FileChooser;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ua.com.pandasushi.database.common.CustomersSite;
 import ua.com.pandasushi.database.common.OrdersSite;
@@ -22,15 +23,15 @@ import java.util.HashMap;
  */
 public class OrdersReport {
 
-    public static void createReport(Calendar from, Calendar to) {
+    public static void createReport(Calendar from, Calendar to, int kitch) {
         SimpleDateFormat sdf = new SimpleDateFormat("ddMM");
         String fileName = "orders_" + sdf.format(from.getTime()) + "-" + sdf.format(to.getTime()) + ".xlsx";
-        createOrdersReport(fileName, from, to);
+        createOrdersReport(fileName, from, to, kitch);
     }
 
 
-    private static void createOrdersReport (String fileName, Calendar from, Calendar to) {
-        XSSFWorkbook book = (XSSFWorkbook) createBook(from, to);
+    private static void createOrdersReport (String fileName, Calendar from, Calendar to, int kitch) {
+        SXSSFWorkbook book = (SXSSFWorkbook) createBook(from, to, kitch);
 
 
         File file = saveFile(fileName);
@@ -71,8 +72,8 @@ public class OrdersReport {
     }
 
 
-    private static Workbook createBook(Calendar from, Calendar to) {
-        Workbook book = new XSSFWorkbook();
+    private static Workbook createBook(Calendar from, Calendar to, int kitch) {
+        SXSSFWorkbook book = new SXSSFWorkbook();
         Sheet customersSheet = book.createSheet("Звіт");
         Sheet ordersSheet = book.createSheet("Замовлення");
         Sheet analytics = book.createSheet("Аналітика");
@@ -159,6 +160,8 @@ public class OrdersReport {
         h27.setCellValue("Оператор");
         Cell h28 = header.createCell(23);
         h28.setCellValue("Повар");
+        Cell h29 = header.createCell(24);
+        h29.setCellValue("На час");
         Row headero = ordersSheet.createRow(0);
         Cell ho1 = headero.createCell(0);
         ho1.setCellValue("Номер");
@@ -171,7 +174,15 @@ public class OrdersReport {
         Cell ho5 = headero.createCell(4);
         ho5.setCellValue("Сума");
 
-        ArrayList<CustomersSite> customers = GlobalPandaApp.site.getCustomers(from.getTime(), to.getTime(), GlobalPandaApp.config.getKitchen().getKitch_id());
+        ArrayList<CustomersSite> customers;
+
+        if (kitch >= 0)
+            customers = GlobalPandaApp.site.getCustomers(from.getTime(), to.getTime(), GlobalPandaApp.config.getKitchen().getKitch_id());
+        else
+            customers = GlobalPandaApp.site.getCustomers(from.getTime(), to.getTime());
+
+        System.out.println(customers.size());
+
         int c = 1;
         for (int i = 0; i < customers.size(); i++) {
             CustomersSite customer = customers.get(i);
@@ -274,6 +285,9 @@ public class OrdersReport {
                 status.setCellValue("Відміна | " + customer.getCancelReason());
             if (customer.isDone() && !customer.isCanceled())
                 status.setCellValue("Готово");
+
+            Cell onTime = row.createCell(24);
+            onTime.setCellValue(customer.isOnTime() ? "Так" : "Ні");
 
             for (int j = 0; j < customers.get(i).getOrdersSite().size(); j++) {
                 OrdersSite order = customers.get(i).getOrdersSite().get(j);
@@ -492,12 +506,16 @@ public class OrdersReport {
         int colC = 0;
         int colO = 0;
         int colA = 0;
-        while (colC <= 24)
-            customersSheet.autoSizeColumn(colC++);
-        while (colO <= 4)
-            ordersSheet.autoSizeColumn(colO++);
-        while (colA <= 2)
-            analytics.autoSizeColumn(colA++);
+        try {
+            while (colC <= 24)
+                customersSheet.autoSizeColumn(colC++);
+            while (colO <= 4)
+                ordersSheet.autoSizeColumn(colO++);
+            while (colA <= 2)
+                analytics.autoSizeColumn(colA++);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return book;
     }

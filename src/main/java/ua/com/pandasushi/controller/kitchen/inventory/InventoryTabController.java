@@ -74,6 +74,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
     @FXML
     Button report;
 
+
+
+
     @FXML
     ProgressIndicator progressToDb;
 
@@ -87,7 +90,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             report.setDisable(true);
         }
 
-        if ( GlobalPandaApp.config.getOperator().getName().equals("Роман Скрип") ) {
+        if ( GlobalPandaApp.config.getOperator().getName().equals("Роман Скрип") || GlobalPandaApp.config.getOperator().getName().equals("Світлана Стасюк") ) {
             selectProducts.setDisable(false);
             report.setDisable(false);
         }
@@ -218,7 +221,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             s2u2.setEditable(true);
         } else if (inv.getProdIngId() > 3000) {
             item.getStyleClass().add("inv-prod");
+            System.out.println(inv.getProdIngName());
             PRODUCTS prod = products.get(inv.getProdIngName());
+            System.out.println(prod.getProductName());
             if (prod.getFirstUnits() == null || prod.getFirstUnits().isEmpty() || prod.getFirstUnits().equals(" ")) {
                 formatU1 = "#,###";
                 s1u1.setEditable(false);
@@ -255,6 +260,18 @@ public class InventoryTabController implements TabController, EventHandler<Actio
 
             s1u2.setFormat(formatU2);
             s2u2.setFormat(formatU2);
+
+            if (inv.getProdIngId().intValue() == 3050) {
+                s1u1.itemProperty().setValue(0);
+                s1u2.itemProperty().setValue(0);
+                s2u1.itemProperty().setValue(0);
+                s2u2.itemProperty().setValue(0);
+                s1u1.setEditable(false);
+                s1u2.setEditable(false);
+                s2u1.setEditable(false);
+                s2u2.setEditable(false);
+                "sdfd".toUpperCase();
+            }
         }
 
 
@@ -614,6 +631,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 prod.setBasicIng(ing.getIngredientId());
                 prod.setProdIngName(prodIng.getProductName());
                 prod.setProdIngId(prodIng.getProductId());
+                System.out.println(prodIng.getProductName());
                 prod.setUnit1(products.get(prodIng.getProductName()).getFirstUnits());
                 prod.setProdRelation(products.get(prodIng.getProductName()).getUnitsRelation());
                 inventoryMap.get(ing.getIngredientId()).add(prod);
@@ -1111,7 +1129,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             ArrayList<Inventory> list = new ArrayList<>();
             list.add(inv);
             for (Inventory inventory : invents.getItems()) {
-                if (inventory.getCheckId() > inv.getCheckId())
+                if (inventory.getEnd().after(inv.getBegin()))
                     list.add(inventory);
             }
             irt.setInv(list);
@@ -1146,6 +1164,22 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         } else {
             return new File("temp.xlsx");
         }
+    }
+
+    public static Float getIngCost (ArrayList<Inventory> list) {
+        float cost = 0.0f;
+
+        /*for (Inventory inv : list) {
+            if (inv.getProdIngId() >= 3000) {
+                int prodWeight = inv.getFactU2() != null ? inv.getFactU2().intValue() : inv.getAttemptU2();
+                if (prodWeight > 0) {
+                while (prodWeight > 0) {
+
+                }
+
+            }
+        }*/
+        return cost;
     }
 
     private class ListItem {

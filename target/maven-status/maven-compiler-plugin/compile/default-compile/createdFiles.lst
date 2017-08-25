@@ -7,6 +7,7 @@ ua\com\pandasushi\controller\costs\product_shift\NewShiftTab.class
 ua\com\pandasushi\database\common\CustomersSite.class
 ua\com\pandasushi\controller\inputconvert\AutocompleteSpreadsheetCellType.class
 ua\com\pandasushi\controller\kitchen\inventory\InventoryPdf.class
+ua\com\pandasushi\controller\control\employee\EmployeeTabController.class
 ua\com\pandasushi\controller\costs\product_shift\NewShiftTab$2.class
 ua\com\pandasushi\database\common\Users.class
 ua\com\pandasushi\controller\inputconvert\AutoCompleteTextField.class
@@ -14,10 +15,10 @@ ua\com\pandasushi\database\common\Fuels.class
 ua\com\pandasushi\database\common\Inventory.class
 ua\com\pandasushi\controller\inputconvert\AutoCompleteTextField$2.class
 ua\com\pandasushi\controller\costs\product_purchase\PurchaseTab.class
-ua\com\pandasushi\controller\control\employee\EmployeeController.class
 ua\com\pandasushi\controller\costs\product_purchase\AddProductDialog.class
 ua\com\pandasushi\controller\inputconvert\AutocompleteSpreadsheetCellType$1.class
 ua\com\pandasushi\Config.class
+ua\com\pandasushi\controller\control\employee\EmployeeTabController$1.class
 ua\com\pandasushi\controller\costs\product_shift\NewShiftTab$1.class
 ua\com\pandasushi\controller\costs\product_purchase\ProductsPurchaseTabController.class
 ua\com\pandasushi\database\common\menu\PRODUCTS_INGREDIENTS.class
@@ -28,6 +29,7 @@ ua\com\pandasushi\controller\kitchen\rozrobka\RozrobkaTabController$2.class
 ua\com\pandasushi\database\common\menu\TEHCARDS.class
 ua\com\pandasushi\controller\costs\product_purchase\PurchaseTabBuilder.class
 ua\com\pandasushi\controller\costs\product_shift\NewShiftTab$MODE.class
+ua\com\pandasushi\controller\control\employee\EmployeeTabController$2.class
 ua\com\pandasushi\controller\inputconvert\ToFloatConverter.class
 ua\com\pandasushi\controller\inputconvert\AutoCompleteTextField$1.class
 ua\com\pandasushi\controller\control\reports\ReportsController.class
@@ -54,12 +56,16 @@ ua\com\pandasushi\controller\kitchen\inventory\InventoryReportTotal.class
 ua\com\pandasushi\controller\costs\product_purchase\PdfMaker.class
 ua\com\pandasushi\controller\order\OrderController.class
 ua\com\pandasushi\controller\kitchen\inventory\InventoryReport.class
+ua\com\pandasushi\controller\control\employee\EmployeeTabController$BooleanCell.class
 ua\com\pandasushi\controller\inputconvert\FXUtilComboBox$AutoCompleteComparator.class
 ua\com\pandasushi\database\common\Positions.class
 ua\com\pandasushi\controller\inputconvert\IntFieldChangeListener.class
 ua\com\pandasushi\database\common\menu\INGREDIENTS.class
 ua\com\pandasushi\database\common\Consumption.class
+ua\com\pandasushi\database\common\Schedule.class
+ua\com\pandasushi\controller\control\schedule\ScheduleController.class
 ua\com\pandasushi\controller\inputconvert\ToStringConverter.class
+ua\com\pandasushi\controller\costs\product_purchase\PurchaseTab$6.class
 ua\com\pandasushi\database\common\menu\PRODUCTS.class
 ua\com\pandasushi\database\local\dao\LocalDAO.class
 ua\com\pandasushi\main\MainFX.class
@@ -77,6 +83,7 @@ ua\com\pandasushi\database\common\menu\Streets.class
 ua\com\pandasushi\controller\control\graphs\GraphsController.class
 ua\com\pandasushi\controller\kitchen\rozrobka\PdfMakerRozrobka.class
 ua\com\pandasushi\controller\control\menu\MenuController.class
+ua\com\pandasushi\database\common\KitchProperties.class
 ua\com\pandasushi\controller\kitchen\inventory\InventoryTabController.class
 ua\com\pandasushi\database\common\Employee.class
 ua\com\pandasushi\controller\costs\product_shift\NewShiftTab$4.class

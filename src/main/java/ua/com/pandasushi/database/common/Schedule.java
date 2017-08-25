@@ -22,7 +22,7 @@ public class Schedule implements Serializable {
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(name = "DATE")
 	private Date date;
@@ -33,14 +33,32 @@ public class Schedule implements Serializable {
 	@Column(name = "EMPLOYEE_ID")
 	private int employeeId;
 	
+	@Column(name = "EMPLOYEE_NAME")
+	private String employeeName;
+	
+	@Column(name = "MARK")
+	private String mark;
+	
+	@Column(name = "OPERATOR")
+	private String operator;
+	
 	@Column(name = "START")
 	private Date start;
+	
+	@Column(name = "START_CHANGE")
+	private Date startChange;
 	
 	@Column(name = "END")
 	private Date end;
 	
+	@Column(name = "END_CHANGE")
+	private Date endChange;
+	
 	@Column(name = "PLAN")
 	private boolean plan;
+	
+	@Column(name = "COMMENT")
+	private String comment;
 
 	public Date getDate() {
 		return date;
@@ -90,9 +108,63 @@ public class Schedule implements Serializable {
 		this.plan = plan;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	public String getMark() {
+		return mark;
+	}
+
+	public void setMark(String mark) {
+		this.mark = mark;
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+	public Date getStartChange() {
+		return startChange;
+	}
+
+	public void setStartChange(Date startChange) {
+		this.startChange = startChange;
+	}
+
+	public Date getEndChange() {
+		return endChange;
+	}
+
+	public void setEndChange(Date endChange) {
+		this.endChange = endChange;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 	
 	
 }

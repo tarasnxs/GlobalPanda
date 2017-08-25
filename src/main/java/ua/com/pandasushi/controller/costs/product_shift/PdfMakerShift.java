@@ -97,7 +97,6 @@ class PdfMakerShift {
 
         PdfPTable mainTab = new PdfPTable(3);
 
-
         PdfPTable products = new PdfPTable(8);
         products.setWidthPercentage(100);
         products.setTotalWidth(100);

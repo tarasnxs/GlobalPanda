@@ -80,6 +80,8 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
             currencyComboBox.setDisable(false);
             currencyComboBox.getSelectionModel().select("UAH");
             contragentComboBox.setStyle("");
+            if (contragentComboBox.getSelectionModel().getSelectedItem().equals("Суші Хаус"))
+                currencyComboBox.getSelectionModel().select("USD");
         });
         AnchorPane.setLeftAnchor(contragentComboBox, 5.0);
         AnchorPane.setTopAnchor(contragentComboBox, 23.0);
@@ -312,7 +314,7 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                         if (result.get() == ButtonType.OK){
                             closeCheck(prodOps, fromTableCell(finalSum.getText()), currencyComboBox.getSelectionModel().getSelectedItem());
                         } else {
-                            //DO NOTHING
+
                         }
                     } else
                         finalSum.setStyle("-fx-border-color: red; -fx-border-radius: 5px; -fx-border-width: 2px; ");
@@ -553,9 +555,12 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                                     }
                                     if(cellText.isEmpty()) cellText = "0";
                                     double res = Double.parseDouble(cellText);
-                                    //table.getGrid().getRows().get(product.getRow()).get(2).setFormat( NumberFormat.getNumberInstance().format((int) (prod.getUnitsRelation() * res)) + " " + prod.getSecondUnits());
                                     table.getGrid().getRows().get(product.getRow()).get(2).setFormat( "#,###.## " + prod.getSecondUnits());
                                     table.getGrid().getRows().get(product.getRow()).get(2).itemProperty().setValue(prod.getUnitsRelation() * res);
+                                    table.getGrid().getRows().get(product.getRow()).get(4).setFormat( "#,###.## " + prod.getFirstUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(4).itemProperty().setValue(res);
+                                    table.getGrid().getRows().get(product.getRow()).get(5).setFormat( "#,###.## " + prod.getSecondUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(5).itemProperty().setValue(prod.getUnitsRelation() * res);
                                 }
                             };
                             cell.textProperty().addListener(listeners[product.getRow() - 2][1]);
@@ -564,6 +569,21 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                             cell.getStyleClass().add("closed-cell");
                         } else {
                             cell.setFormat("#,###.## " + prod.getFirstUnits());
+                            listeners[product.getRow() - 2][1] = new ChangeListener() {
+                                @Override
+                                public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                                    String cellText = cell.getText();
+                                    if (!cellText.matches("\\-?\\d+(\\.\\d{0,})?")) {
+                                        cellText = cellText.replaceAll(",", ".");
+                                        cellText = cellText.replaceAll("[^\\d\\.]", "");
+                                    }
+                                    if(cellText.isEmpty()) cellText = "0";
+                                    double res = Double.parseDouble(cellText);
+                                    table.getGrid().getRows().get(product.getRow()).get(4).setFormat( "#,###.## " + prod.getFirstUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(4).itemProperty().setValue(res);
+                                }
+                            };
+                            cell.textProperty().addListener(listeners[product.getRow() - 2][1]);
                         }
                     }
 
@@ -578,6 +598,15 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                             @Override
                             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                                 cell.setStyle("");
+                                String cellText = cell.getText();
+                                if (!cellText.matches("\\-?\\d+(\\.\\d{0,})?")) {
+                                    cellText = cellText.replaceAll(",", ".");
+                                    cellText = cellText.replaceAll("[^\\d\\.]", "");
+                                }
+                                if(cellText.isEmpty()) cellText = "0";
+                                double res = Double.parseDouble(cellText);
+                                table.getGrid().getRows().get(product.getRow()).get(5).setFormat( "#,###.## " + prod.getSecondUnits());
+                                table.getGrid().getRows().get(product.getRow()).get(5).itemProperty().setValue(res);
                             }
                         };
                         cell.textProperty().addListener(listeners[product.getRow() - 2][2]);
@@ -737,6 +766,8 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
         cost.getStyleClass().add("closed-cell");
 
         cost.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (fromTableCell(newValue) < 0)
+                cost.itemProperty().setValue(fromTableCell(newValue)*-1);
             double finalSum = 0.0;
             for (int i = 2; i < ROW_COUNT; i++) {
                 try {

@@ -141,7 +141,9 @@ public class InventoryReportTotal extends Task<Workbook> {
 
     private void fillTotalSheet (HashMap<Integer, ArrayList<Inventory>> inventory, HashMap<Integer, ArrayList<Inventory>> previous) {
 
-        String name = new SimpleDateFormat("dd.MM").format(inventory.values().iterator().next().get(0).getTimeStart());
+        Inventory iTemp = inventory.values().iterator().next().get(0);
+
+        String name = new SimpleDateFormat("dd.MM").format(iTemp.getTimeStart()) + (iTemp.getKitchen().equals(0) ? " - Сихів" : " - Щепова");
 
         try {
             Sheet totalSheet = book.createSheet(name);
@@ -584,6 +586,14 @@ public class InventoryReportTotal extends Task<Workbook> {
                     tFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
                     totalsCell.setFont(tFont);
                     cell.setCellStyle(totalsCell);
+                }
+
+                for (Inventory toUpdate : cur) {
+                    int totalCalc = Math.round(totalPrevious + totalPurchase + totalShift + totalDiffRozrobka - totalConsumption);
+                    toUpdate.setCalculatedNetto(totalCalc);
+                    toUpdate.setDiffNetto(Math.round(difference) * -1);
+                    toUpdate.setDiffPercent(-100 * difference / totalConsumption);
+                    GlobalPandaApp.site.update(toUpdate);
                 }
 
                 totalSheet.createRow(index++);

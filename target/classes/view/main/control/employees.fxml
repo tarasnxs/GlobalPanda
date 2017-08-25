@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.pandasushi.controller.control.employee.EmployeeController">
+<AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.pandasushi.controller.control.employee.EmployeeTabController">
 	<children>
 		<TableView fx:id="table" editable="true" layoutX="7.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: #6f9faf; -fx-border-width: 3;" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="6.0">
 			<columns>
-				<TableColumn fx:id="id" editable="false" prefWidth="10.0" text="ID" />
-				<TableColumn fx:id="name" editable="true" prefWidth="147.0" text="Ім'я" />
-				<TableColumn fx:id="position" editable="true" prefWidth="117.0" text="Посада" />
+				<TableColumn fx:id="id" editable="false" prefWidth="85.0" text="ID" />
+				<TableColumn fx:id="name" editable="true" prefWidth="71.0" text="Ім'я" />
+				<TableColumn fx:id="position" editable="true" prefWidth="149.0" text="Посада" />
+            <TableColumn fx:id="mark" prefWidth="75.0" text="Мітка" />
 				<TableColumn fx:id="kitchen" editable="true" prefWidth="91.0" text="Кухня" />
 				<TableColumn fx:id="cost" editable="true" prefWidth="109.0" text="Ставка/год" />
 				<TableColumn fx:id="cons" editable="true" prefWidth="124.0" text="Розхід палива" />
-				<TableColumn fx:id="stationFuel" editable="true" prefWidth="108.0" text="Заправка/Бензин" />
-				<TableColumn fx:id="code" editable="true" prefWidth="148.0" text="Код" />
+				<TableColumn fx:id="stationFuel" editable="true" prefWidth="134.0" text="Заправка/Бензин" />
 				<TableColumn fx:id="active" prefWidth="75.0" text="Активний" />
 			</columns>
 			<columnResizePolicy>

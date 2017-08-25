@@ -12,7 +12,7 @@
         <tabs>
           <Tab text="План">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="planTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ChoiceBox fx:id="kitchSelect" prefWidth="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <DatePicker fx:id="dateSelect" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="10.0" />

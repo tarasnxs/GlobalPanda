@@ -2,12 +2,15 @@ package ua.com.pandasushi.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import ua.com.pandasushi.controller.control.employee.EmployeeController;
+import ua.com.pandasushi.controller.control.employee.EmployeeTabController;
 import ua.com.pandasushi.controller.control.menu.MenuController;
 import ua.com.pandasushi.controller.control.reports.ReportsController;
-import ua.com.pandasushi.controller.control.schedule.ScheduleController;
+import ua.com.pandasushi.controller.control.schedule.ScheduleFactController;
+import ua.com.pandasushi.controller.control.schedule.SchedulePlanController;
 import ua.com.pandasushi.controller.costs.product_purchase.ProductsPurchaseTabController;
 import ua.com.pandasushi.controller.costs.product_shift.ProductsShiftTabController;
 import ua.com.pandasushi.controller.kitchen.inventory.InventoryTabController;
@@ -72,7 +75,7 @@ public class MainController {
     Tab menuSU;
 
     @FXML
-    Tab employeesTab;
+    Tab employee;
 
     @FXML
     Tab schedule;
@@ -93,7 +96,7 @@ public class MainController {
     Tab reports;
 
     @FXML
-    private EmployeeController employee;
+    private EmployeeTabController employeeTabController;
 
     @FXML
     private OrderController pandaOrder;
@@ -120,15 +123,20 @@ public class MainController {
     private ReportsController reportsTabController;
 
     @FXML
-    private ScheduleController scheduleTabController;
+    private SchedulePlanController schedulePlanController;
+
+    @FXML
+    private ScheduleFactController scheduleFactController;
+
+    @FXML
+    private MenuBar menuBar;
 
     @FXML
     public void initialize() {
-        employee = new EmployeeController();
         pandaOrder = new OrderController();
         menu = new MenuController();
         System.out.println("Applicaton is started");
-        employee.init(this);
+        employeeTabController.init(this);
         pandaOrder.init(this);
         menu.init(this);
         productsPurchaseTabController.init(this);
@@ -136,7 +144,20 @@ public class MainController {
         rozrobkaTabController.init(this);
         inventoryTabController.init(this);
         reportsTabController.init(this);
-        scheduleTabController.init(this);
+        schedulePlanController.init(this);
+        scheduleFactController.init(this);
+        if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 0) {
+            menuBar.setStyle("-fx-background-color: rgb(50,255,50);");
+            Menu menu = new Menu("Сихів");
+            menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
+            menuBar.getMenus().add(menu);
+        }
+        if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 1) {
+            menuBar.setStyle("-fx-background-color: rgb(222,184,135);");
+            Menu menu = new Menu("Варшавська");
+            menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
+            menuBar.getMenus().add(menu);
+        }
         setTabAccess(GlobalPandaApp.config.getOperator());
     }
 
@@ -152,7 +173,7 @@ public class MainController {
         list.add(converts);
         //list.add(inventory);
         list.add(viewOrders);
-        list.add(employeesTab);
+        //list.add(employeesTab);
         //list.add(schedule);
         list.add(gasStations);
         list.add(balance);

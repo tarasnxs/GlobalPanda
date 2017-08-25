@@ -1,18 +1,20 @@
 package ua.com.pandasushi.database.common;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by Тарас on 15.03.2017.
  */
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(include = "all", usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "INVENTORY")
 public class Inventory implements Serializable {
 
@@ -109,8 +111,31 @@ public class Inventory implements Serializable {
 
     @Column( name = "COMMENT" )
     private String comment;
+    
+    @Column( name = "ADDED_IMPORTANCE" )
+    private Integer addedImportance;
+    
+    @Column( name = "BALANCE_IMPORTANCE" )
+    private Integer balanceImportance;
+    
 
-    public Long getInventoryId() {
+    public Integer getAddedImportance() {
+		return addedImportance;
+	}
+
+	public void setAddedImportance(Integer addedImportance) {
+		this.addedImportance = addedImportance;
+	}
+
+	public Integer getBalanceImportance() {
+		return balanceImportance;
+	}
+
+	public void setBalanceImportance(Integer balanceImportance) {
+		this.balanceImportance = balanceImportance;
+	}
+
+	public Long getInventoryId() {
         return inventoryId;
     }
 

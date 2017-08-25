@@ -5,6 +5,7 @@ import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
@@ -14,6 +15,7 @@ import jfxtras.scene.control.LocalDatePicker;
 import jfxtras.scene.control.LocalDateTimePicker;
 import ua.com.pandasushi.controller.MainController;
 import ua.com.pandasushi.controller.TabController;
+import ua.com.pandasushi.main.GlobalPandaApp;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -39,6 +41,9 @@ public class ReportsController implements TabController {
     @FXML
     private Button inventoryReport;
 
+    @FXML
+    private CheckBox fullReport;
+
     private LocalDatePicker fromPicker;
 
     @Override
@@ -54,7 +59,7 @@ public class ReportsController implements TabController {
         ordersReport.setOnAction(event -> {
             Calendar[] res = getSelectedDates();
             System.out.println(res[0].getTime().toString() + " - " + res[1].getTime().toString());
-            OrdersReport.createReport(res[0], res[1]);
+            OrdersReport.createReport(res[0], res[1], fullReport.isSelected() ? -1 : GlobalPandaApp.config.getKitchen().getKitch_id());
         });
 
         purchaseReport.setOnAction(event -> {

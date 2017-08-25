@@ -1,10 +1,13 @@
 package ua.com.pandasushi.database.site.dao;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import command.Command;
 import ua.com.pandasushi.database.common.*;
 import ua.com.pandasushi.database.common.menu.*;
 import ua.com.pandasushi.main.GlobalPandaApp;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -51,6 +54,8 @@ public class NewDAOSiteImpl implements DAOSite {
             result = ois.readObject();
 
 
+        } catch (EOFException e) {
+            //e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -264,7 +269,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean alreadyInventory() {
+    public Boolean alreadyInventory() {
         boolean result = true;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -367,7 +372,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap) {
+    public Boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -417,7 +422,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveRozrobka(Rozrobka rozrobka) {
+    public Boolean saveRozrobka(Rozrobka rozrobka) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -435,7 +440,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveOperations(ArrayList<Operations> opList) {
+    public Boolean saveOperations(ArrayList<Operations> opList) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -487,7 +492,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public float getDebt(Integer checkID) {
+    public Float getDebt(Integer checkID) {
         float result = 0.0f;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -656,7 +661,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public float getNewAvgCoef(Integer prodId) {
+    public Float getNewAvgCoef(Integer prodId) {
         float result = 0.0f;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -776,7 +781,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
+    public Integer getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -793,7 +798,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
+    public Integer getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -827,7 +832,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
+    public Integer getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
         int result = 0;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -844,7 +849,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
+    public Integer getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -883,7 +888,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId) {
+    public Integer getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId) {
         Integer result = null;
 
         Command command = new Command();
@@ -1375,4 +1380,59 @@ public class NewDAOSiteImpl implements DAOSite {
 
         return result;
     }
+
+    @Override
+    public HashMap<LocalDate, HashMap<Integer, Schedule>> getSceduleMapPlan(LocalDate start, LocalDate end, String position) {
+        HashMap<LocalDate, HashMap<Integer, Schedule>> result = new HashMap<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, LocalDate.class, String.class});
+        command.setArguments(new Object[]{start, end, position});
+        try {
+            result = (HashMap<LocalDate, HashMap<Integer, Schedule>>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getSceduleListFact(LocalDate date, Integer kitchId) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, Integer.class});
+        command.setArguments(new Object[]{date, kitchId});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public void saveSchedule(Schedule schedule) {
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Schedule.class});
+        command.setArguments(new Object[]{schedule});
+        try {
+            sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

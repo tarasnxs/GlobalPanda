@@ -38,6 +38,8 @@ public class InventoryPdf {
     InventoryPdf (LinkedHashMap<Integer, ArrayList<Inventory>> list) throws FileNotFoundException, DocumentException {
         this.list = list;
         check = new Document(PageSize.A5, 25, 25, 25, 25);
+        System.out.println(list.values().size());
+        System.out.println(list.keySet().size());
         inv = list.values().iterator().next().get(0);
         rowCount = 0;
         for (ArrayList<Inventory> invs : this.list.values())

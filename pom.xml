@@ -152,6 +152,12 @@
             <version>5.0.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.sarxos</groupId>
+            <artifactId>windows-registry-util</artifactId>
+            <version>0.2</version>
+        </dependency>
+
     </dependencies>
 
 </project>

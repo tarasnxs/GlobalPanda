@@ -1,5 +1,8 @@
 package ua.com.pandasushi.main;
 
+import com.github.sarxos.winreg.HKey;
+import com.github.sarxos.winreg.RegistryException;
+import com.github.sarxos.winreg.WindowsRegistry;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -130,6 +133,25 @@ public class GlobalPandaApp extends Application {
         login = new Button("Вхід");
         loginLayout.setPrefWidth(175);
         loginLayout.setPrefHeight(175);
+
+        WindowsRegistry wr = WindowsRegistry.getInstance();
+        String loginReg = null;
+        try {
+            loginReg = wr.readString(HKey.HKCU, "Software\\Kite\\HFQ\\regf\\AppData", "usr_tkn");
+        } catch (RegistryException e) {
+        }
+
+        if (loginReg != null && !loginReg.isEmpty()) {
+            if (loginReg.contains("syhiv")) {
+                kitchen.getSelectionModel().select("Сихів");
+                kitchen.setDisable(true);
+            }
+
+            if (loginReg.contains("varshav")) {
+                kitchen.getSelectionModel().select("Варшавська");
+                kitchen.setDisable(true);
+            }
+        }
 
         Label label = new Label("Вхід");
         label.setFont(new Font("Arial Black", 16.0));

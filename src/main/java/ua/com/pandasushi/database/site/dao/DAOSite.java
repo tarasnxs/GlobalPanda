@@ -37,7 +37,7 @@ public interface DAOSite extends Serializable {
 
     Integer getNextInventoryCheckId();
 
-    boolean alreadyInventory();
+    Boolean alreadyInventory();
 
     LinkedHashMap<Integer, ArrayList<Inventory>> getTodayInventory();
 
@@ -49,21 +49,21 @@ public interface DAOSite extends Serializable {
 
     Float getCoefNF(Integer ingredientId, Integer nfId);
 
-    boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap);
+    Boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap);
 
     void saveOperation(Operations op);
 
     ArrayList<Rozrobka> getTodayRozrobka();
 
-    boolean saveRozrobka(Rozrobka rozrobka);
+    Boolean saveRozrobka(Rozrobka rozrobka);
 
-    boolean saveOperations(ArrayList<Operations> opList);
+    Boolean saveOperations(ArrayList<Operations> opList);
 
     HashMap<Integer, ArrayList<Operations>> getOpenShifts();
 
     ArrayList<Kitchens> getKitchens();
 
-    float getDebt(Integer checkID);
+    Float getDebt(Integer checkID);
 
     void updateAverageProducts(Integer prodId);
 
@@ -83,7 +83,7 @@ public interface DAOSite extends Serializable {
 
     ArrayList<Operations> getOperations();
 
-    float getNewAvgCoef(Integer prodId);
+    Float getNewAvgCoef(Integer prodId);
 
     ArrayList<TEHCARDS> getTehcards();
 
@@ -97,21 +97,21 @@ public interface DAOSite extends Serializable {
 
     ArrayList<PRODUCTS_INGREDIENTS> getProdForIng(Integer ingredientId);
 
-    int getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId);
+    Integer getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId);
 
-    int getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId);
+    Integer getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId);
 
     ArrayList<Operations> getReportProdPurchase(Date from, Date to, Integer productId, Integer kitchen);
 
-    int getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId);
+    Integer getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId);
 
-    int getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId);
+    Integer getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId);
 
     ArrayList<Operations> getReportProdShift(Date from, Date to, Integer productId, Integer kitchen);
 
     ArrayList<Consumption> deleteCancelled(Collection<Consumption> cl);
 
-    int getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId);
+    Integer getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId);
 
     ArrayList<Consumption> getIngredientConsumptionList(Date from, Date to, Integer ingredientId, Integer kitch);
 
@@ -162,5 +162,11 @@ public interface DAOSite extends Serializable {
     ArrayList<Schedule> getSchedule(Integer kitchId, LocalDate date, Boolean plan);
     
     ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan);
+
+    HashMap<LocalDate, HashMap<Integer, Schedule>> getSceduleMapPlan(LocalDate start, LocalDate end, String position);
+
+    ArrayList<Schedule> getSceduleListFact(LocalDate date, Integer kitchId);
+
+    void saveSchedule(Schedule schedule);
     
 }
