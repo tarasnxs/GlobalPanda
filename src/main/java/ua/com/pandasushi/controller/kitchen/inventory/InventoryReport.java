@@ -68,25 +68,7 @@ public class InventoryReport extends Task<Workbook> {
         return new XSSFWorkbook();
     }
 
-    InventoryReport(Inventory inv) {
-        progressBar = new SimpleDoubleProperty(0.0);
-
-        ids = new HashSet<>();
-        current = new HashMap<>();
-        previous = new HashMap<>();
-        for ( Inventory cur : GlobalPandaApp.site.getInventoryList(inv.getCheckId()) ) {
-            if ( !current.containsKey(cur.getBasicIng()) )
-                current.put(cur.getBasicIng(), new ArrayList<>());
-            current.get(cur.getBasicIng()).add(cur);
-            if ( !previous.containsKey(cur.getBasicIng()))
-                previous.put(cur.getBasicIng(), GlobalPandaApp.site.getLastInventory(cur.getBasicIng(), cur.getCheckId(), cur.getKitchen()));
-        }
-
-    }
-
     public void setInv(Inventory inv) {
-
-
 
         ids = new HashSet<>();
         current = new HashMap<>();
@@ -100,7 +82,7 @@ public class InventoryReport extends Task<Workbook> {
                 previous.put(cur.getBasicIng(), GlobalPandaApp.site.getLastInventory(cur.getBasicIng(), cur.getCheckId(), cur.getKitchen()));
         }
 
-        if (current.keySet().size() > 6)
+        if (current.keySet().size() > 10)
             book = new SXSSFWorkbook();
         else
             book = new XSSFWorkbook();
@@ -407,7 +389,8 @@ public class InventoryReport extends Task<Workbook> {
                     row.createCell(19, Cell.CELL_TYPE_NUMERIC).setCellValue(GlobalPandaApp.site.getIngredientConsumption(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen()));
                     row.getCell(19).setCellStyle(intNumStyle);
 
-                    row.createCell(22, Cell.CELL_TYPE_NUMERIC).setCellValue(c.getFactU1());
+                    row.createCell(22, Cell.CELL_TYPE_NUMERIC).
+                            setCellValue(c.getFactU1());
                     row.getCell(22).setCellStyle(intNumStyle);
 
                     row.createCell(23, Cell.CELL_TYPE_NUMERIC).setCellValue(c.getFactU2());
@@ -546,6 +529,7 @@ public class InventoryReport extends Task<Workbook> {
                 }
 
                 Row totals = totalSheet.createRow(index++);
+                Row inDB = totalSheet.createRow(index++);
 
                 int importance = 0;
 
@@ -556,10 +540,10 @@ public class InventoryReport extends Task<Workbook> {
                     case 0 :
                         importance = ing.getSyhivImportance();
                         break;
-
-                    case 1 :
-                        importance = ing.getVarshavImportance();
-                        break;
+//
+//                    case 1 :
+//                        importance = ing.getVarshavImportance();
+//                        break;
 
                     default :
 
@@ -567,43 +551,107 @@ public class InventoryReport extends Task<Workbook> {
                 }
 
 
-                totals.createCell(2, Cell.CELL_TYPE_STRING).setCellValue("Нетто : " + ingName + " (" + importance + ")");
+                Inventory temp = cur.get(0);
+                int ingCost;
+                if (temp.getIngPrice() != null)
+                    ingCost = (int) (temp.getIngPrice() * 1000);
+                else {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(temp.getBegin());
+                    ingCost = GlobalPandaApp.site.getIngredientCostOnDate(temp.getCalculatedNetto(), temp.getBasicIng(), c, "Львів").intValue();
+                }
+                System.out.println(ingCost);
+                totals.createCell(2, Cell.CELL_TYPE_STRING).setCellValue("Нетто : " + ingName +
+                       " // " + ingCost + " грн/кг");
+                inDB.createCell(2, Cell.CELL_TYPE_STRING).setCellValue("В базі даних: ");
 
                 totals.createCell(6, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalPrevious));
                 totals.getCell(6).setCellStyle(intNumStyle);
+                inDB.createCell(6, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getPreviousNetto() != null ? temp.getPreviousNetto() : 0);
+                inDB.getCell(6).setCellStyle(intNumStyle);
 
                 totals.createCell(10, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalPurchase));
                 totals.getCell(10).setCellStyle(intNumStyle);
+                inDB.createCell(10, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getProductPurchase() != null ? temp.getProductPurchase() : 0);
+                inDB.getCell(10).setCellStyle(intNumStyle);
 
                 totals.createCell(14, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalShift));
                 totals.getCell(14).setCellStyle(intNumStyle);
+                inDB.createCell(14, Cell.CELL_TYPE_NUMERIC).
+                        setCellValue(
+                                (temp.getProductShift() != null ? temp.getProductShift() : 0) +
+                                (temp.getWriteOffNetto() != null ? temp.getWriteOffNetto() : 0)
+                        );
+                inDB.getCell(14).setCellStyle(intNumStyle);
 
                 totals.createCell(17, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalDiffRozrobka));
                 totals.getCell(17).setCellStyle(intNumStyle);
+                inDB.createCell(17, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getRozrobka() != null ? temp.getRozrobka() : 0);
+                inDB.getCell(17).setCellStyle(intNumStyle);
 
                 totals.createCell(21, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalConsumption));
                 totals.getCell(21).setCellStyle(intNumStyle);
+                inDB.createCell(21, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getRozhid() != null ? temp.getRozhid() : 0);
+                inDB.getCell(21).setCellStyle(intNumStyle);
 
                 totals.createCell(25, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(totalFact));
                 totals.getCell(25).setCellStyle(intNumStyle);
+                inDB.createCell(25, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getInputNetto() != null ? temp.getInputNetto() : 0);
+                inDB.getCell(25).setCellStyle(intNumStyle);
 
                 float difference = totalPrevious + totalPurchase + totalShift + totalDiffRozrobka - totalConsumption - totalFact;
 
                 totals.createCell(27, Cell.CELL_TYPE_NUMERIC).setCellValue(Math.round(difference) * -1);
                 totals.getCell(27).setCellStyle(intNumStyle);
+                inDB.createCell(27, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffNetto() != null ? temp.getDiffNetto() : 0);
+                inDB.getCell(27).setCellStyle(intNumStyle);
+
+
+                /*for (Inventory toUpdate : cur) {
+                    int totalCalc = Math.round(totalPrevious + totalPurchase + totalShift + totalDiffRozrobka - totalConsumption);
+                    toUpdate.setCalculatedNetto(totalCalc);
+                    toUpdate.setDiffNetto(Math.round(difference) * -1);
+                    toUpdate.setDiffPercent(-100 * difference / totalConsumption);
+                    //GlobalPandaApp.site.update(toUpdate);
+                }*/
 
                 if (totalConsumption > 0) {
-                    totals.createCell(28, Cell.CELL_TYPE_NUMERIC).setCellValue(-100 * difference / totalConsumption);
+                    float percent = -100 * difference / totalConsumption;
+                    float cost = GlobalPandaApp.site.getIngCost(cur).floatValue();
+                    totals.createCell(28, Cell.CELL_TYPE_NUMERIC).setCellValue(percent);
                     totals.getCell(28).setCellStyle(percentStyle);
+                    inDB.createCell(28, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffPercent() != null ? temp.getDiffPercent() : 0);
+                    inDB.getCell(28).setCellStyle(percentStyle);
+                    float diffComp = 0.0f;
+                    if (Math.abs(percent) < -5.0f) {
+                        diffComp = (difference / percent) * (Math.abs(percent) - 5);
+                    }
+                    totals.createCell(29, Cell.CELL_TYPE_NUMERIC).setCellValue(diffComp * cost);
+                    totals.getCell(29).setCellStyle(intNumStyle);
+                    inDB.createCell(29, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffCompensation() != null ? temp.getDiffCompensation() : 0);
+                    inDB.getCell(29).setCellStyle(intNumStyle);
+
+                    float diffUah = cost * difference * (-1);
+                    totals.createCell(30, Cell.CELL_TYPE_NUMERIC).setCellValue(diffUah);
+                    totals.getCell(30).setCellStyle(intNumStyle);
+                    inDB.createCell(30, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffUah() != null ? temp.getDiffUah() : 0);
+                    inDB.getCell(30).setCellStyle(intNumStyle);
+                } else {
+                    totals.createCell(28, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
+                    totals.getCell(28).setCellStyle(percentStyle);
+                    inDB.createCell(28, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffPercent() != null ? temp.getDiffPercent() : 0);
+                    inDB.getCell(28).setCellStyle(percentStyle);
+
+                    totals.createCell(29, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
+                    totals.getCell(29).setCellStyle(intNumStyle);
+                    inDB.createCell(29, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffCompensation() != null ? temp.getDiffCompensation() : 0);
+                    inDB.getCell(29).setCellStyle(intNumStyle);
+
+                    totals.createCell(30, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
+                    totals.getCell(30).setCellStyle(intNumStyle);
+                    inDB.createCell(30, Cell.CELL_TYPE_NUMERIC).setCellValue(temp.getDiffUah() != null ? temp.getDiffUah() : 0);
+                    inDB.getCell(30).setCellStyle(intNumStyle);
                 }
-
-
-                totals.createCell(29, Cell.CELL_TYPE_NUMERIC).setCellValue(cur.get(0).getDiffCompensation());
-                totals.getCell(29).setCellStyle(intNumStyle);
-
-
-                totals.createCell(30, Cell.CELL_TYPE_NUMERIC).setCellValue(cur.get(0).getDiffUah());
-                totals.getCell(30).setCellStyle(intNumStyle);
 
 
                 totals.createCell(31, Cell.CELL_TYPE_STRING).setCellValue(cur.get(0).getFirstAttempt() ? "Так" : "Ні");
@@ -621,14 +669,6 @@ public class InventoryReport extends Task<Workbook> {
                     tFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
                     totalsCell.setFont(tFont);
                     cell.setCellStyle(totalsCell);
-                }
-
-                for (Inventory toUpdate : cur) {
-                    int totalCalc = Math.round(totalPrevious + totalPurchase + totalShift + totalDiffRozrobka - totalConsumption);
-                    toUpdate.setCalculatedNetto(totalCalc);
-                    toUpdate.setDiffNetto(Math.round(difference) * -1);
-                    toUpdate.setDiffPercent(-100 * difference / totalConsumption);
-                    GlobalPandaApp.site.update(toUpdate);
                 }
 
                 totalSheet.createRow(index++);
@@ -663,6 +703,7 @@ public class InventoryReport extends Task<Workbook> {
                                 cellN.setCellStyle(lBord);
                             }
                         } catch (HibernateException e) {
+                            e.printStackTrace();
                             System.out.println(e.getLocalizedMessage());
                         }
                     }

@@ -127,6 +127,7 @@ public class GlobalPandaApp extends Application {
         kitchList.put("Сихів", 0);
         kitchList.put("Варшавська", 1);
         kitchList.put("Списання", 2);
+        kitchList.put("Садова", 5);
         kitchen = new ComboBox<>();
         kitchen.getItems().addAll(kitchList.keySet());
         kitchen.getSelectionModel().select(0);
@@ -149,6 +150,11 @@ public class GlobalPandaApp extends Application {
 
             if (loginReg.contains("varshav")) {
                 kitchen.getSelectionModel().select("Варшавська");
+                kitchen.setDisable(true);
+            }
+
+            if (loginReg.contains("sadova")) {
+                kitchen.getSelectionModel().select("Садова");
                 kitchen.setDisable(true);
             }
         }

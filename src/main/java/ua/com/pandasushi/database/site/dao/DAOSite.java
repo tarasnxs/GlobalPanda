@@ -1,6 +1,8 @@
 package ua.com.pandasushi.database.site.dao;
 
 import ua.com.pandasushi.database.common.*;
+import ua.com.pandasushi.database.common.inventory.CalculatedNetto;
+import ua.com.pandasushi.database.common.inventory.InvSelect;
 import ua.com.pandasushi.database.common.menu.*;
 
 import java.io.Serializable;
@@ -161,12 +163,50 @@ public interface DAOSite extends Serializable {
     
     ArrayList<Schedule> getSchedule(Integer kitchId, LocalDate date, Boolean plan);
     
+    ArrayList<Schedule> getScheduleBetween(Integer kitchId, LocalDate start, LocalDate end, Boolean plan);
+    
     ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan);
-
-    HashMap<LocalDate, HashMap<Integer, Schedule>> getSceduleMapPlan(LocalDate start, LocalDate end, String position);
-
-    ArrayList<Schedule> getSceduleListFact(LocalDate date, Integer kitchId);
-
+    
     void saveSchedule(Schedule schedule);
     
+    HashMap<LocalDate, HashMap<Integer, Schedule>> getSceduleMapPlan(LocalDate start, LocalDate end, String position);
+    
+    ArrayList<Schedule> getSceduleListFact(LocalDate date, Integer kitchId);
+    
+    Float getIngCost();
+    
+    Float getIngCost(ArrayList<Inventory> list);
+    
+    Float getProperty(String property);
+    
+    ArrayList<InvSelect> fillTodayInventory();
+
+    Calendar[] getDayLimits(Calendar day);
+
+    CalculatedNetto getCalculatedNettoOnDate(Integer kitchen, Integer ingId, Calendar date);
+
+    Calendar getLastInventoryDate(Integer kitchen, Integer ingId, Calendar date);
+
+    Integer getInventoryNettoOnDate(Integer kitchen, Integer ingId, Calendar date);
+
+    Integer getProductPurchaseNettoBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end);
+
+    Integer getNettoShiftBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end);
+
+    Integer getNettoWriteOffBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end);
+
+    Integer getDiffProcessingBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end);
+
+    Integer getNettoConsumptionBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end);
+
+    Float getCoefToNettoOnDate(Integer prodIngId, Calendar date);
+
+    Float getCoefNf(Integer ingId, Integer nfId);
+
+    Float getIngredientCostOnDate(Integer ingId, Calendar date, String city);
+
+    Float getIngredientCostOnDate(Integer nettoLeft, Integer ingId, Calendar date, String city);
+
+    HashMap<Integer, HashMap<Integer, Integer>> getStatsForMobile(Date from, Date to);
+
 }

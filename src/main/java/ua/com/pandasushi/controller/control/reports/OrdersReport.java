@@ -29,7 +29,6 @@ public class OrdersReport {
         createOrdersReport(fileName, from, to, kitch);
     }
 
-
     private static void createOrdersReport (String fileName, Calendar from, Calendar to, int kitch) {
         SXSSFWorkbook book = (SXSSFWorkbook) createBook(from, to, kitch);
 

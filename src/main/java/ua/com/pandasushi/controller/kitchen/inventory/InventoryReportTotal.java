@@ -63,12 +63,11 @@ public class InventoryReportTotal extends Task<Workbook> {
     public void setInv(ArrayList<Inventory> invList) {
 
 
-
         ids = new HashSet<>();
         current = new ArrayList<>();
         previous = new ArrayList<>();
         ingredientsList = GlobalPandaApp.site.getIngredients();
-        for ( int i = 0; i < invList.size(); i++ ) {
+        for (int i = 0; i < invList.size(); i++) {
             current.add(new HashMap<>());
             previous.add(new HashMap<>());
             for (Inventory cur : GlobalPandaApp.site.getInventoryList(invList.get(i).getCheckId())) {
@@ -87,7 +86,7 @@ public class InventoryReportTotal extends Task<Workbook> {
 
     }
 
-    public Workbook makeExcel () {
+    public Workbook makeExcel() {
         progressBar.set(0.10);
         headerStyle = book.createCellStyle();
         dateStyle = book.createCellStyle();
@@ -127,23 +126,40 @@ public class InventoryReportTotal extends Task<Workbook> {
         fillGroupStyle.setFillPattern(CellStyle.BIG_SPOTS);
 
 
-
         progressBar.set(0.0);
         System.out.println("fillTotalSheet");
         for (int i = 0; i < current.size(); i++) {
             fillTotalSheet(current.get(i), previous.get(i));
-            progressBar.set( (1.0 / (double) current.size()) * ( (double) i + 1.0) );
+            progressBar.set((1.0 / (double) current.size()) * ((double) i + 1.0));
         }
 
         progressBar.set(1.0);
         return book;
     }
 
-    private void fillTotalSheet (HashMap<Integer, ArrayList<Inventory>> inventory, HashMap<Integer, ArrayList<Inventory>> previous) {
+    private void fillTotalSheet(HashMap<Integer, ArrayList<Inventory>> inventory, HashMap<Integer, ArrayList<Inventory>> previous) {
 
         Inventory iTemp = inventory.values().iterator().next().get(0);
 
-        String name = new SimpleDateFormat("dd.MM").format(iTemp.getTimeStart()) + (iTemp.getKitchen().equals(0) ? " - Сихів" : " - Щепова");
+        String kitchName = "";
+        switch (iTemp.getKitchen()) {
+            case 0:
+                kitchName = "Сихів";
+                break;
+
+            case 1:
+                kitchName = "Варшавська";
+                break;
+
+            case 5:
+                kitchName = "Садова";
+                break;
+
+            default:
+                break;
+        }
+
+        String name = new SimpleDateFormat("dd.MM").format(iTemp.getTimeStart()) + kitchName;
 
         try {
             Sheet totalSheet = book.createSheet(name);
@@ -357,7 +373,6 @@ public class InventoryReportTotal extends Task<Workbook> {
                     row.getCell(17).setCellStyle(intNumStyle);
 
 
-
                     if (rozrobka.get(1) > 0) {
                         float coef = (float) rozrobka.get(0) / (float) rozrobka.get(1);
                         row.createCell(18, Cell.CELL_TYPE_NUMERIC).setCellValue(coef);
@@ -518,15 +533,15 @@ public class InventoryReportTotal extends Task<Workbook> {
                 INGREDIENTS ing = ingredientsList.stream().filter(ingredients -> ingredients.getIngredientName().equals(finalIngName)).findFirst().get();
 
                 switch (cur.get(0).getKitchen().intValue()) {
-                    case 0 :
+                    case 0:
                         importance = ing.getSyhivImportance();
                         break;
 
-                    case 1 :
+                    case 1:
                         importance = ing.getVarshavImportance();
                         break;
 
-                    default :
+                    default:
 
                         break;
                 }
@@ -593,7 +608,19 @@ public class InventoryReportTotal extends Task<Workbook> {
                     toUpdate.setCalculatedNetto(totalCalc);
                     toUpdate.setDiffNetto(Math.round(difference) * -1);
                     toUpdate.setDiffPercent(-100 * difference / totalConsumption);
-                    GlobalPandaApp.site.update(toUpdate);
+                    try {
+                        float cost = GlobalPandaApp.site.getIngCost(cur).floatValue();
+                        toUpdate.setDiffUah(Math.round(cost * toUpdate.getDiffNetto()));
+                        if (toUpdate.getDiffPercent() < -5.0f) {
+                            float diffComp = (toUpdate.getDiffUah().floatValue() / toUpdate.getDiffPercent().floatValue()) * (toUpdate.getDiffPercent().floatValue() + 5.0f);
+                            toUpdate.setDiffCompensation(Math.round(diffComp * cost));
+                        } else
+                            toUpdate.setDiffCompensation(0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //GlobalPandaApp.site.update(toUpdate);
+                    //System.out.println("Updated : " + toUpdate.getKitchen() + " - " + toUpdate.getTimeStart().toString() + " - " + toUpdate.getProdIngName());
                 }
 
                 totalSheet.createRow(index++);

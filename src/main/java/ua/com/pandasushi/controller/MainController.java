@@ -158,6 +158,12 @@ public class MainController {
             menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
             menuBar.getMenus().add(menu);
         }
+        if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 5) {
+            menuBar.setStyle("-fx-background-color: rgb(135,184,222);");
+            Menu menu = new Menu("Садова");
+            menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
+            menuBar.getMenus().add(menu);
+        }
         setTabAccess(GlobalPandaApp.config.getOperator());
     }
 

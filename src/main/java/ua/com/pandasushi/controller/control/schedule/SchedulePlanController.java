@@ -980,7 +980,7 @@ public class SchedulePlanController implements TabController {
     private void updateTotals (String position) {
 
         int[] totals = new int[7];
-        for (ObservableList<SpreadsheetCell> row : sheet.getGrid().getRows()) {
+            for (ObservableList<SpreadsheetCell> row : sheet.getGrid().getRows()) {
             if (row.get(0).getStyleClass().contains("schedule-cell-operator")
                     || row.get(0).getStyleClass().contains("schedule-cell-cooker")
                     || row.get(0).getStyleClass().contains("schedule-cell-courier")

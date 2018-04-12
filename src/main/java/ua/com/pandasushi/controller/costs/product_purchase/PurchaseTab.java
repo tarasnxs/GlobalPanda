@@ -359,21 +359,19 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                 GlobalPandaApp.site.saveOperations(productList);
                 for (Operations op : productList)
                     GlobalPandaApp.site.updateAverageProducts(op.getIntparameter1().intValue());
-                if (paySum > 0.0) {
-                    Operations borg = new Operations();
-                    Operations op = productList.get(0);
-                    borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
-                    borg.setType(Operations.DEBT_PURCHASE);
-                    borg.setDate(op.getDate());
-                    borg.setStartPeriod(op.getDate());
-                    borg.setEndPeriod(op.getDate());
-                    borg.setSum(paySum * -1);
-                    borg.setCurrency(op.getCurrency());
-                    borg.setOperator(GlobalPandaApp.config.getOperator().getName());
-                    borg.setContrAgent(op.getContrAgent());
-                    borg.setCheckId(op.getCheckId());
-                    GlobalPandaApp.site.saveOperation(borg);
-                }
+                Operations borg = new Operations();
+                Operations op = productList.get(0);
+                borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
+                borg.setType(Operations.DEBT_PURCHASE);
+                borg.setDate(op.getDate());
+                borg.setStartPeriod(op.getDate());
+                borg.setEndPeriod(op.getDate());
+                borg.setSum(paySum * -1);
+                borg.setCurrency(op.getCurrency());
+                borg.setOperator(GlobalPandaApp.config.getOperator().getName());
+                borg.setContrAgent(op.getContrAgent());
+                borg.setCheckId(op.getCheckId());
+                GlobalPandaApp.site.saveOperation(borg);
                 stage.close();
                 ArrayList<Float> allSum = GlobalPandaApp.site.getSumForType(Operations.PRODUCT_PURCHASE);
                 String s = "Сума за день : " + ( allSum.get(0) > 0 ? allSum.get(0) + " UAH; " : "" )
@@ -399,21 +397,21 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                 GlobalPandaApp.site.saveOperations(productList);
                 for (Operations op : productList)
                     GlobalPandaApp.site.updateAverageProducts(op.getIntparameter1().intValue());
-                if (paySum > 0.0) {
-                    Operations borg = new Operations();
-                    Operations op = productList.get(0);
-                    borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
-                    borg.setType(Operations.DEBT_PURCHASE);
-                    borg.setDate(op.getDate());
-                    borg.setStartPeriod(op.getDate());
-                    borg.setEndPeriod(op.getDate());
-                    borg.setSum(paySum * -1);
-                    borg.setCurrency(op.getCurrency());
-                    borg.setOperator(GlobalPandaApp.config.getOperator().getName());
-                    borg.setContrAgent(op.getContrAgent());
-                    borg.setCheckId(op.getCheckId());
-                    GlobalPandaApp.site.saveOperation(borg);
-                }
+
+                Operations borg = new Operations();
+                Operations op = productList.get(0);
+                borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
+                borg.setType(Operations.DEBT_PURCHASE);
+                borg.setDate(op.getDate());
+                borg.setStartPeriod(op.getDate());
+                borg.setEndPeriod(op.getDate());
+                borg.setSum(paySum * -1);
+                borg.setCurrency(op.getCurrency());
+                borg.setOperator(GlobalPandaApp.config.getOperator().getName());
+                borg.setContrAgent(op.getContrAgent());
+                borg.setCheckId(op.getCheckId());
+                GlobalPandaApp.site.saveOperation(borg);
+
                 stage.close();
                 builder.closeTab(tab);
             } else {

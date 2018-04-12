@@ -3,6 +3,8 @@ package ua.com.pandasushi.database.site.dao;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import command.Command;
 import ua.com.pandasushi.database.common.*;
+import ua.com.pandasushi.database.common.inventory.CalculatedNetto;
+import ua.com.pandasushi.database.common.inventory.InvSelect;
 import ua.com.pandasushi.database.common.menu.*;
 import ua.com.pandasushi.main.GlobalPandaApp;
 
@@ -1363,6 +1365,11 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
+    public ArrayList<Schedule> getScheduleBetween(Integer kitchId, LocalDate start, LocalDate end, Boolean plan) {
+        return null;
+    }
+
+    @Override
     public ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan) {
         ArrayList<Schedule> result = new ArrayList<>();
 
@@ -1432,6 +1439,222 @@ public class NewDAOSiteImpl implements DAOSite {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Float getIngCost() {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getIngCost(ArrayList<Inventory> list) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{ArrayList.class});
+        command.setArguments(new Object[]{list});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getProperty(String property) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{String.class});
+        command.setArguments(new Object[]{property});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InvSelect> fillTodayInventory() {
+        ArrayList<InvSelect> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<InvSelect>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Calendar[] getDayLimits(Calendar day) {
+        Calendar[] result = null;
+
+        Command command = new Command();
+            command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+            command.setArgumentTypes(new Class[]{Calendar.class});
+            command.setArguments(new Object[]{day});
+            try {
+            result = (Calendar[]) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public CalculatedNetto getCalculatedNettoOnDate(Integer kitchen, Integer ingId, Calendar date) {
+        CalculatedNetto result = new CalculatedNetto();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Calendar.class});
+        command.setArguments(new Object[]{kitchen, ingId, date});
+        try {
+            result = (CalculatedNetto) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Calendar getLastInventoryDate(Integer kitchen, Integer ingId, Calendar date) {
+        return null;
+    }
+
+    @Override
+    public Integer getInventoryNettoOnDate(Integer kitchen, Integer ingId, Calendar date) {
+        return null;
+    }
+
+    @Override
+    public Integer getProductPurchaseNettoBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoShiftBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoWriteOffBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getDiffProcessingBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoConsumptionBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Float getCoefToNettoOnDate(Integer prodIngId, Calendar date) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Calendar.class});
+        command.setArguments(new Object[]{prodIngId,date});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getCoefNf(Integer ingId, Integer nfId) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class});
+        command.setArguments(new Object[]{ingId,nfId});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getIngredientCostOnDate(Integer ingId, Calendar date, String city) {
+        return getIngredientCostOnDate(null, ingId, date, city);
+    }
+
+    @Override
+    public Float getIngredientCostOnDate(Integer nettoLeft, Integer ingId, Calendar date, String city) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Calendar.class, String.class});
+        command.setArguments(new Object[]{nettoLeft, ingId, date, city});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public HashMap<Integer, HashMap<Integer, Integer>> getStatsForMobile(Date from, Date to) {
+        return null;
     }
 
 
