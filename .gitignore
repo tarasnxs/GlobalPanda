@@ -1,6 +1,8 @@
-*.iml
 *.pdf
 *.xlsx
-/target/*
-/logs/*
-/.idea/*
+!temp.xlsx
+*.iml
+/target
+/logs
+/.idea
+/lib

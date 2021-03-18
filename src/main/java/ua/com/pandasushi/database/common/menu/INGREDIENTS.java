@@ -1,7 +1,5 @@
 package ua.com.pandasushi.database.common.menu;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,9 +9,9 @@ import java.io.Serializable;
 
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(include = "all", usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "LIB_INGREDIENTS")
 public class INGREDIENTS implements Serializable {
+
     @Id
     @Column(name = "INGREDIENT_ID")
     private Integer ingredientId;
@@ -27,6 +25,9 @@ public class INGREDIENTS implements Serializable {
     @Column(name = "EXPIRED_PERIOD")
     private Integer expiredPeriod;
 
+    @Column(name = "EXPIRED_PERIOD_MIN")
+    private Integer expiredPeriodMin;
+
     @Column(name = "IMAGE_URL")
     private String imageUrl;
 
@@ -39,8 +40,19 @@ public class INGREDIENTS implements Serializable {
     @Column(name = "IS_ON_INVENTORY")
     private Boolean onInventary;
 
-    public INGREDIENTS () {
+    @Column(name = "IS_ON_CAFE_INVENTORY")
+    private Boolean onCafeInventory;
+
+    public INGREDIENTS() {
         super();
+    }
+
+    public Integer getExpiredPeriodMin() {
+        return expiredPeriodMin;
+    }
+
+    public void setExpiredPeriodMin(Integer expiredPeriodMin) {
+        this.expiredPeriodMin = expiredPeriodMin;
     }
 
     public Integer getIngredientId() {
@@ -105,6 +117,14 @@ public class INGREDIENTS implements Serializable {
 
     public void setOnInventary(Boolean onInventary) {
         this.onInventary = onInventary;
+    }
+
+    public Boolean getOnCafeInventory() {
+        return onCafeInventory;
+    }
+
+    public void setOnCafeInventory(Boolean onCafeInventory) {
+        this.onCafeInventory = onCafeInventory;
     }
 
     @Override

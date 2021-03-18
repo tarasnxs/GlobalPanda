@@ -8,6 +8,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import ua.com.pandasushi.database.common.Operations;
+import ua.com.pandasushi.database.common.menu.PRODUCTS_INGREDIENTS;
+import ua.com.pandasushi.main.GlobalPandaApp;
 
 import java.awt.*;
 import java.io.File;
@@ -98,10 +100,10 @@ class PdfMaker {
         PdfPTable mainTab = new PdfPTable(3);
 
 
-        PdfPTable products = new PdfPTable(8);
+        PdfPTable products = new PdfPTable(9);
         products.setWidthPercentage(100);
-        products.setTotalWidth(100);
-        int[] widths = {31,10,10,9,10,10,9,11};
+        products.setTotalWidth(109);
+        int[] widths = {33,10,10,11,11,11,12,11,0};
         products.setWidths(widths);
 
         PdfPCell productH = new PdfPCell(new Phrase("Продукт", hFont));
@@ -123,6 +125,11 @@ class PdfMaker {
         poFactu.setColspan(2);
         poFactu.setVerticalAlignment(Element.ALIGN_CENTER);
         poFactu.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell coefIng = new PdfPCell(new Phrase("Коеф інг", hFont));
+        coefIng.setRowspan(2);
+        coefIng.setVerticalAlignment(Element.ALIGN_CENTER);
+        coefIng.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         PdfPCell costPerUnit = new PdfPCell(new Phrase("Вартість за кг", hFont));
         costPerUnit.setRowspan(2);
@@ -154,6 +161,7 @@ class PdfMaker {
         products.addCell(poCheku);
         products.addCell(cost);
         products.addCell(poFactu);
+        products.addCell(coefIng);
         products.addCell(costPerUnit);
         products.addCell(commentar);
         products.addCell(u1check);
@@ -183,6 +191,15 @@ class PdfMaker {
             u2fac.setHorizontalAlignment(Element.ALIGN_RIGHT);
             u2fac.setVerticalAlignment(Element.ALIGN_BOTTOM);
             products.addCell(u2fac);
+            PRODUCTS_INGREDIENTS prodIng = GlobalPandaApp.site.getProdIngForProd(op.getStrparameter1());
+            PdfPCell coefIngCell;
+            if( prodIng != null )
+                coefIngCell = new PdfPCell(new Phrase(numFormat(prodIng.getAvgCoef()) + " (" + Math.round(op.getFloatparameter4().floatValue()/prodIng.getAvgCoef()) + " г)", cFont ));
+            else
+                coefIngCell = new PdfPCell(new Phrase());
+            coefIngCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            coefIngCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+            products.addCell(coefIngCell);
             PdfPCell cpu = new PdfPCell(new Phrase(op.getIntparameter4() > 0.1 ? numFormat(op.getIntparameter4()) + "" : "-", cFont));
             cpu.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cpu.setVerticalAlignment(Element.ALIGN_BOTTOM);
@@ -212,7 +229,7 @@ class PdfMaker {
 
         mainTab.setWidthPercentage(100);
         mainTab.setTotalWidth(100);
-        mainTab.setWidths(new int[]{15,77,8});
+        mainTab.setWidths(new int[]{15,75,10});
 
         PdfPCell tabProd = new PdfPCell();
         tabProd.setRotation(270);
@@ -223,10 +240,30 @@ class PdfMaker {
         tabSigns.setFixedHeight(check.getPageSize().getHeight());
         tabSigns.addElement(signs);
 
+        String kitchName;
+        switch (productList.get(0).getKitchen()) {
+            case 0:
+                kitchName = "Сихів";
+                break;
+            case 1:
+                kitchName = "Варшавська";
+                break;
+            case 5:
+                kitchName = "Садова";
+                break;
+            case 7:
+                kitchName = "Кафе (Чорновола)";
+                break;
+            default:
+                kitchName = "" + productList.get(0).getKitchen();
+                break;
+        }
+
         PdfPCell info;
         if(pageNumber < 1) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-            info = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
+
+            info = new PdfPCell(new Phrase(kitchName + sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
             info.setRotation(270);
             info.setFixedHeight(check.getPageSize().getHeight());
             info.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -235,7 +272,7 @@ class PdfMaker {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
             PdfPTable infoTab = new PdfPTable(2);
-            PdfPCell checkNum = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
+            PdfPCell checkNum = new PdfPCell(new Phrase(kitchName + sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
             PdfPCell pageNum = new PdfPCell(new Phrase("Сторінка № " + pageNumber + "/" + pageCount, hFont ));
             checkNum.setHorizontalAlignment(Element.ALIGN_RIGHT);
             pageNum.setHorizontalAlignment(Element.ALIGN_LEFT);

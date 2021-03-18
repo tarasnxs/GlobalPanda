@@ -97,7 +97,6 @@ class PdfMakerShift {
 
         PdfPTable mainTab = new PdfPTable(3);
 
-
         PdfPTable products = new PdfPTable(8);
         products.setWidthPercentage(100);
         products.setTotalWidth(100);
@@ -234,10 +233,33 @@ class PdfMakerShift {
         tabSigns.setFixedHeight(check.getPageSize().getHeight());
         tabSigns.addElement(signs);
 
+        String from = "";
+        switch (productList.get(0).getKitchen()) {
+            case 0:
+                from = "Сихів";
+                break;
+            case 1:
+                from = "Варшавська";
+                break;
+            case 5:
+                from = "Садова";
+                break;
+        }
+
         PdfPCell info;
         if(pageNumber < 1) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-            info = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Переміщення № " + productList.get(0).getCheckId(), hFont));
+
+            info = new PdfPCell(new Phrase(
+                    sdf.format(productList.get(0).getDate()) +
+                    " - Переміщення № " +
+                    productList.get(0).getCheckId() +
+                    " " +
+                    from +
+                    " -> " +
+                    productList.get(0).getContrAgent(),
+                    hFont
+            ));
             info.setRotation(270);
             info.setFixedHeight(check.getPageSize().getHeight());
             info.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -246,7 +268,16 @@ class PdfMakerShift {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
             PdfPTable infoTab = new PdfPTable(2);
-            PdfPCell checkNum = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Переміщення № " + productList.get(0).getCheckId(), hFont));
+            PdfPCell checkNum = new PdfPCell(new Phrase(
+                    sdf.format(productList.get(0).getDate()) +
+                            " - Переміщення № " +
+                            productList.get(0).getCheckId() +
+                            " " +
+                            from +
+                            " -> " +
+                            productList.get(0).getContrAgent(),
+                    hFont
+            ));
             PdfPCell pageNum = new PdfPCell(new Phrase("Сторінка № " + pageNumber + "/" + pageCount, hFont ));
             checkNum.setHorizontalAlignment(Element.ALIGN_RIGHT);
             pageNum.setHorizontalAlignment(Element.ALIGN_LEFT);

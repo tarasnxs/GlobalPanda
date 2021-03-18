@@ -67,14 +67,21 @@ public class ProductsPurchaseTabController implements TabController {
         }
 
         makeReport.setOnAction(event -> {
-
-            LocalDate date = reportDate.getValue();
-
             Calendar cal = Calendar.getInstance();
-            cal.set(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth(), 12, 0, 0);
             if(cal.get(Calendar.HOUR_OF_DAY) < 6)
                 cal.add(Calendar.DAY_OF_MONTH, -1);
-            String path = (GlobalPandaApp.config.getKitchen().getKitch_id() == 0 ? "S" : "V") + cal.get(Calendar.DAY_OF_MONTH) + "." + (new SimpleDateFormat("MM").format(cal.getTime())) + "."
+            String kitchChar;
+            switch (GlobalPandaApp.config.getKitchen().getKitch_id()) {
+                case 0: kitchChar = "S";
+                break;
+                case 1: kitchChar = "V";
+                break;
+                case 5: kitchChar = "L";
+                break;
+                default: kitchChar = "TEST";
+                break;
+            }
+            String path = kitchChar + cal.get(Calendar.DAY_OF_MONTH) + "." + (new SimpleDateFormat("MM").format(cal.getTime())) + "."
                     + cal.get(Calendar.YEAR) + " Закупка продуктів" + ".xlsx";
             File file = new File(path);
             ExcelService.createReportProductPurchase(file, cal.getTime());

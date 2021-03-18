@@ -80,6 +80,8 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
             currencyComboBox.setDisable(false);
             currencyComboBox.getSelectionModel().select("UAH");
             contragentComboBox.setStyle("");
+            if (contragentComboBox.getSelectionModel().getSelectedItem().equals("Суші Хаус"))
+                currencyComboBox.getSelectionModel().select("USD");
         });
         AnchorPane.setLeftAnchor(contragentComboBox, 5.0);
         AnchorPane.setTopAnchor(contragentComboBox, 23.0);
@@ -312,7 +314,7 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                         if (result.get() == ButtonType.OK){
                             closeCheck(prodOps, fromTableCell(finalSum.getText()), currencyComboBox.getSelectionModel().getSelectedItem());
                         } else {
-                            //DO NOTHING
+
                         }
                     } else
                         finalSum.setStyle("-fx-border-color: red; -fx-border-radius: 5px; -fx-border-width: 2px; ");
@@ -333,12 +335,20 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
         return res;
     }
 
+
+
     public void closeCheck (ArrayList<Operations> productList, double sum, String cur) {
+        final Double[] baseSum = {sum};
+        final Double[] totalPaySum = {sum};
+
         Font font = new Font("Calibri", 15.0);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UTILITY);
         stage.initModality(Modality.APPLICATION_MODAL);
         AnchorPane pane = new AnchorPane();
+
+
+
         Label doOplaty = new Label("Сума до оплати : " + sum + " " + cur);
         doOplaty.setFont(font);
         Label oplacheno = new Label("Оплачено : ");
@@ -351,27 +361,83 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
         });
         field.setText(sum + "");
         field.setPrefWidth(80.0);
-        field.setOnAction(event -> {
-            float paySum = Float.parseFloat(field.getText());
-            if (paySum <= sum) {
-                GlobalPandaApp.site.saveOperations(productList);
-                for (Operations op : productList)
-                    GlobalPandaApp.site.updateAverageProducts(op.getIntparameter1().intValue());
-                if (paySum > 0.0) {
-                    Operations borg = new Operations();
-                    Operations op = productList.get(0);
-                    borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
-                    borg.setType(Operations.DEBT_PURCHASE);
-                    borg.setDate(op.getDate());
-                    borg.setStartPeriod(op.getDate());
-                    borg.setEndPeriod(op.getDate());
-                    borg.setSum(paySum * -1);
-                    borg.setCurrency(op.getCurrency());
-                    borg.setOperator(GlobalPandaApp.config.getOperator().getName());
-                    borg.setContrAgent(op.getContrAgent());
-                    borg.setCheckId(op.getCheckId());
-                    GlobalPandaApp.site.saveOperation(borg);
+
+        Button ok = new Button("Оформити");
+        ok.requestFocus();
+        Button cancel = new Button("Відміна");
+        cancel.setOnAction(event -> stage.close());
+
+        Label delivery = new Label("Вартість доставки");
+        delivery.setFont(font);
+        TextField deliveryCost = new TextField();
+        deliveryCost.setFont(font);
+        deliveryCost.textProperty().addListener(new FloatFieldChangeListener(deliveryCost));
+        deliveryCost.textProperty().addListener((observable, oldValue, newValue) -> {
+            field.setStyle("");
+            try {
+                Double d = Double.parseDouble(newValue);
+                if (d != null) {
+                    totalPaySum[0] = baseSum[0] + d;
+                    doOplaty.setText("Сума до оплати : " + totalPaySum[0] + " " + cur);
+                    field.setText(totalPaySum[0] + "");
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        deliveryCost.setText(0+"");
+        deliveryCost.setPrefWidth(80.0);
+
+
+
+        EventHandler<ActionEvent> eventHandler = event -> {
+            float paySum = Float.parseFloat(field.getText());
+            float deliverySum = Float.parseFloat(deliveryCost.getText());
+            if (paySum <= totalPaySum[0]) {
+                if (deliverySum > 0) {
+                    double totalWeight = productList.stream().mapToDouble(o -> o.getFloatparameter4()).sum();
+                    double priceForUnit = deliverySum / totalWeight;
+                    for (Operations op : productList) {
+                        op.setIntparameter2((float)Math.round(op.getFloatparameter4() * priceForUnit));
+                        op.setSum(op.getSum() +
+                                op.getIntparameter2());
+                    }
+                }
+
+                Integer checkId = null;
+                while (checkId == null) {
+                    try {
+                        checkId = GlobalPandaApp.site.getNextCheckID(Operations.PRODUCT_PURCHASE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                for (Operations op : productList) {
+                    op.setCheckId(checkId);
+                }
+                GlobalPandaApp.site.saveOperations(productList);
+                for (Operations op : productList) {
+                    GlobalPandaApp.site.updateAverageProducts(op.getIntparameter1().intValue());
+                }
+
+                Operations borg = new Operations();
+                Operations op = productList.get(0);
+                borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
+                borg.setType(Operations.DEBT_PURCHASE);
+                borg.setDate(op.getDate());
+                borg.setStartPeriod(op.getDate());
+                borg.setEndPeriod(op.getDate());
+                borg.setSum(paySum * -1);
+                borg.setCurrency(op.getCurrency());
+                borg.setOperator(GlobalPandaApp.config.getOperator().getName());
+                borg.setContrAgent(op.getContrAgent());
+                borg.setCheckId(op.getCheckId());
+                if (deliverySum > 0) {
+                    borg.setIntparameter2(deliverySum);
+                }
+
+                GlobalPandaApp.site.saveOperation(borg);
                 stage.close();
                 ArrayList<Float> allSum = GlobalPandaApp.site.getSumForType(Operations.PRODUCT_PURCHASE);
                 String s = "Сума за день : " + ( allSum.get(0) > 0 ? allSum.get(0) + " UAH; " : "" )
@@ -387,59 +453,29 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                 tt.setAutoReverse(true);
                 tt.play();
             }
-        });
-        Button ok = new Button("Оформити");
-        ok.requestFocus();
-        Button cancel = new Button("Відміна");
-        ok.setOnAction(event -> {
-            float paySum = Float.parseFloat(field.getText());
-            if (paySum <= sum) {
-                GlobalPandaApp.site.saveOperations(productList);
-                for (Operations op : productList)
-                    GlobalPandaApp.site.updateAverageProducts(op.getIntparameter1().intValue());
-                if (paySum > 0.0) {
-                    Operations borg = new Operations();
-                    Operations op = productList.get(0);
-                    borg.setKitchen(GlobalPandaApp.config.getKitchen().getKitch_id());
-                    borg.setType(Operations.DEBT_PURCHASE);
-                    borg.setDate(op.getDate());
-                    borg.setStartPeriod(op.getDate());
-                    borg.setEndPeriod(op.getDate());
-                    borg.setSum(paySum * -1);
-                    borg.setCurrency(op.getCurrency());
-                    borg.setOperator(GlobalPandaApp.config.getOperator().getName());
-                    borg.setContrAgent(op.getContrAgent());
-                    borg.setCheckId(op.getCheckId());
-                    GlobalPandaApp.site.saveOperation(borg);
-                }
-                stage.close();
-                builder.closeTab(tab);
-            } else {
-                field.setStyle("-fx-border-color: red; -fx-border-radius: 5px; -fx-border-width: 1px; ");
-                TranslateTransition tt = new TranslateTransition(Duration.millis(100), field);
-                tt.setByX(1f);
-                tt.setCycleCount(4);
-                tt.setAutoReverse(true);
-                tt.play();
-            }
-        });
-        cancel.setOnAction(event -> {
-            stage.close();
-        });
+        };
 
+        field.setOnAction(eventHandler);
+        ok.setOnAction(eventHandler);
+
+
+        AnchorPane.setLeftAnchor(delivery, 10.0);
+        AnchorPane.setTopAnchor(delivery, 10.0);
         AnchorPane.setLeftAnchor(doOplaty, 10.0);
-        AnchorPane.setTopAnchor(doOplaty, 10.0);
+        AnchorPane.setTopAnchor(doOplaty, 35.0);
         AnchorPane.setLeftAnchor(oplacheno, 10.0);
-        AnchorPane.setTopAnchor(oplacheno, 35.0);
+        AnchorPane.setTopAnchor(oplacheno, 60.0);
+        AnchorPane.setLeftAnchor(deliveryCost, 130.0);
+        AnchorPane.setTopAnchor(deliveryCost, 10.0);
         AnchorPane.setLeftAnchor(field, 90.0);
-        AnchorPane.setTopAnchor(field, 35.0);
+        AnchorPane.setTopAnchor(field, 60.0);
         AnchorPane.setRightAnchor(ok, 15.0);
         AnchorPane.setBottomAnchor(ok, 10.0);
         AnchorPane.setLeftAnchor(cancel, 15.0);
         AnchorPane.setBottomAnchor(cancel, 10.0);
 
-        pane.getChildren().addAll(doOplaty, oplacheno, field, ok, cancel);
-        Scene scene = new Scene(pane, 250, 130);
+        pane.getChildren().addAll(doOplaty, oplacheno, field, ok, cancel, delivery, deliveryCost);
+        Scene scene = new Scene(pane, 250, 160);
         stage.setTitle("Оплата");
         stage.setScene(scene);
         stage.show();
@@ -540,7 +576,8 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                     cell.setEditable(true);
                     cell.getStyleClass().remove("closed-cell");
                     if(cell.getColumn() == 1) {
-                        PRODUCTS prod = products.get(product.getText().toString());
+                        PRODUCTS prod = products.get(product.getText());
+
                         if( prod.getUnitsRelation() > 0 ) {
                             cell.setFormat("#,###.## " + prod.getFirstUnits());
                             listeners[product.getRow() - 2][1] = new ChangeListener() {
@@ -553,9 +590,12 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                                     }
                                     if(cellText.isEmpty()) cellText = "0";
                                     double res = Double.parseDouble(cellText);
-                                    //table.getGrid().getRows().get(product.getRow()).get(2).setFormat( NumberFormat.getNumberInstance().format((int) (prod.getUnitsRelation() * res)) + " " + prod.getSecondUnits());
                                     table.getGrid().getRows().get(product.getRow()).get(2).setFormat( "#,###.## " + prod.getSecondUnits());
                                     table.getGrid().getRows().get(product.getRow()).get(2).itemProperty().setValue(prod.getUnitsRelation() * res);
+                                    table.getGrid().getRows().get(product.getRow()).get(4).setFormat( "#,###.## " + prod.getFirstUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(4).itemProperty().setValue(res);
+                                    table.getGrid().getRows().get(product.getRow()).get(5).setFormat( "#,###.## " + prod.getSecondUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(5).itemProperty().setValue(prod.getUnitsRelation() * res);
                                 }
                             };
                             cell.textProperty().addListener(listeners[product.getRow() - 2][1]);
@@ -564,6 +604,21 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                             cell.getStyleClass().add("closed-cell");
                         } else {
                             cell.setFormat("#,###.## " + prod.getFirstUnits());
+                            listeners[product.getRow() - 2][1] = new ChangeListener() {
+                                @Override
+                                public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                                    String cellText = cell.getText();
+                                    if (!cellText.matches("\\-?\\d+(\\.\\d{0,})?")) {
+                                        cellText = cellText.replaceAll(",", ".");
+                                        cellText = cellText.replaceAll("[^\\d\\.]", "");
+                                    }
+                                    if(cellText.isEmpty()) cellText = "0";
+                                    double res = Double.parseDouble(cellText);
+                                    table.getGrid().getRows().get(product.getRow()).get(4).setFormat( "#,###.## " + prod.getFirstUnits());
+                                    table.getGrid().getRows().get(product.getRow()).get(4).itemProperty().setValue(res);
+                                }
+                            };
+                            cell.textProperty().addListener(listeners[product.getRow() - 2][1]);
                         }
                     }
 
@@ -578,6 +633,15 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
                             @Override
                             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                                 cell.setStyle("");
+                                String cellText = cell.getText();
+                                if (!cellText.matches("\\-?\\d+(\\.\\d{0,})?")) {
+                                    cellText = cellText.replaceAll(",", ".");
+                                    cellText = cellText.replaceAll("[^\\d\\.]", "");
+                                }
+                                if(cellText.isEmpty()) cellText = "0";
+                                double res = Double.parseDouble(cellText);
+                                table.getGrid().getRows().get(product.getRow()).get(5).setFormat( "#,###.## " + prod.getSecondUnits());
+                                table.getGrid().getRows().get(product.getRow()).get(5).itemProperty().setValue(res);
                             }
                         };
                         cell.textProperty().addListener(listeners[product.getRow() - 2][2]);
@@ -737,6 +801,8 @@ public class PurchaseTab implements EventHandler<ActionEvent> {
         cost.getStyleClass().add("closed-cell");
 
         cost.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (fromTableCell(newValue) < 0)
+                cost.itemProperty().setValue(fromTableCell(newValue)*-1);
             double finalSum = 0.0;
             for (int i = 2; i < ROW_COUNT; i++) {
                 try {

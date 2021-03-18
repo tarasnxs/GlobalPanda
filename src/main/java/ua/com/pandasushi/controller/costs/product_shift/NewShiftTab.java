@@ -1,5 +1,6 @@
 package ua.com.pandasushi.controller.costs.product_shift;
 
+import com.itextpdf.text.DocumentException;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,6 +31,7 @@ import ua.com.pandasushi.database.common.menu.PRODUCTS_INGREDIENTS;
 import ua.com.pandasushi.database.common.menu.TEHCARDS;
 import ua.com.pandasushi.main.GlobalPandaApp;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -37,7 +39,7 @@ import java.util.*;
 public class NewShiftTab implements EventHandler<ActionEvent> {
 
     private static MODE mode;
-    private static final  int COLUMN_COUNT = 8;
+    private static final  int COLUMN_COUNT = 9;
     private int ROW_COUNT = 52;
 
     private Tab tab;
@@ -118,6 +120,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         }
         table.getColumns().get(0).setPrefWidth(310.0);
         table.getColumns().get(7).setPrefWidth(180.0);
+        table.getColumns().get(8).setPrefWidth(250);
     }
 
     private void buildGrid(GridBase grid) {
@@ -179,6 +182,11 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         receiver.getStyleClass().add("header-cell");
         headerCells.add(receiver);
 
+        SpreadsheetCell comment = SpreadsheetCellType.STRING.createCell(row, 8, 2, 1, "Коментар");
+        comment.setEditable(true);
+        comment.getStyleClass().add("header-cell");
+        headerCells.add(comment);
+
         return headerCells;
     }
 
@@ -213,7 +221,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
 
         headerCells.add(SpreadsheetCellType.STRING.createCell(row, 7, 1, 1, ""));
 
-
+        headerCells.add(SpreadsheetCellType.STRING.createCell(row, 8, 1, 1, ""));
         return headerCells;
     }
 
@@ -637,6 +645,11 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         }
         dataCells.add(cook);
 
+        SpreadsheetCell comment = SpreadsheetCellType.STRING.createCell(row, 8, 1, 1, "");
+        comment.setEditable(true);
+        comment.getStyleClass().add("plain-cell");
+        dataCells.add(comment);
+
         return dataCells;
     }
 
@@ -670,7 +683,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
 
         kitchenComboBox = new ComboBox<>();
         kitchenComboBox.setPrefWidth(110.0);
-        kitchenComboBox.setItems(getKitchenList());
+        kitchenComboBox.setItems(getKitchenList().filtered(s -> !s.equals(GlobalPandaApp.config.getKitchen().getName())));
         kitchenComboBox.setOnAction(event -> {
             kitchenComboBox.setStyle("");
         });
@@ -1080,7 +1093,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
                     borg.setSum(paySum * -1);
                     borg.setCurrency("UAH");
                     borg.setOperator(GlobalPandaApp.config.getOperator().getName());
-                    borg.setContrAgent(GlobalPandaApp.site.getKitchens().stream().filter(kitch -> operations.get(0).getKitchen() == kitch.getKitch_id()).findFirst().get().getName());
+                    borg.setContrAgent(GlobalPandaApp.site.getKitchens().stream().filter(kitch -> operations.get(0).getKitchen().equals(kitch.getKitch_id()) ).findFirst().get().getName());
                     borg.setCheckId(operations.get(0).getCheckId());
                     GlobalPandaApp.site.saveOperation(borg);
                 }
@@ -1189,10 +1202,10 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
                 op.setDescription2(courier);
                 op.setIntparameter4(fromTableCell(row.get(6).getText()));
                 op.setCheckId(checkID);
-                op.setBoolparameter1(false);
+                /*op.setBoolparameter1(false);
                 op.setBoolparameter2(false);
                 op.setBoolparameter3(false);
-                if (kitchen.equals("Списання")) {
+                if (kitchen.equals("Списання")) {*/
                     op.setBoolparameter1(true);
                     op.setBoolparameter2(true);
                     op.setBoolparameter3(true);
@@ -1201,7 +1214,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
                     op.setFloatparameter3(op.getFloatparameter1());
                     op.setFloatparameter4(op.getFloatparameter2());
                     op.setStrparameter4(op.getOperator());
-                }
+                //}
                 list.add(op);
             }
         }
@@ -1212,9 +1225,14 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         }
 
         if (GlobalPandaApp.site.saveOperations(list)) {
-            //TODO MAKE PDF
-            builder.reloadTabs();
+            try {
+                new PdfMakerShift(list, fromTableCell(finalSum.getText())).createPdf();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        builder.reloadTabs();
 
     }
 

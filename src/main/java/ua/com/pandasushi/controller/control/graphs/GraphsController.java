@@ -2,6 +2,13 @@ package ua.com.pandasushi.controller.control.graphs;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.control.ToggleButton;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 public class GraphsController {
 /*
@@ -164,9 +171,10 @@ public class GraphsController {
             graph.getData().add(sumChartA);
         }
     }
-    */
+
     @FXML
     void switchMode(ActionEvent event) {
 
     }
+    */
 }

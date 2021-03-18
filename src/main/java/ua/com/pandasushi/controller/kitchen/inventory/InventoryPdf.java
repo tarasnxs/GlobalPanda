@@ -38,6 +38,8 @@ public class InventoryPdf {
     InventoryPdf (LinkedHashMap<Integer, ArrayList<Inventory>> list) throws FileNotFoundException, DocumentException {
         this.list = list;
         check = new Document(PageSize.A5, 25, 25, 25, 25);
+        System.out.println(list.values().size());
+        System.out.println(list.keySet().size());
         inv = list.values().iterator().next().get(0);
         rowCount = 0;
         for (ArrayList<Inventory> invs : this.list.values())
@@ -112,7 +114,7 @@ public class InventoryPdf {
                 PdfPCell s1u2 = null;
                 PdfPCell s2u1 = null;
                 PdfPCell s2u2 = null;
-                if (inv.getProdIngId() < 1700) {
+                if (inv.getProdIngId() < 1700 || (inv.getProdIngId() >= 1900 && inv.getProdIngId() < 3000) ) {
                     prodIng = new PdfPCell(new Phrase(number++ + ". " + inv.getProdIngName(), iFont));
 
                     s1u1 = new PdfPCell();

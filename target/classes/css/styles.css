@@ -1,3 +1,53 @@
+.cell-corner{
+    -fx-background-color: #000;
+
+}
+
+.spreadsheet-cell.schedule-cell-cooker{
+    -fx-background-color: #ffcce6;
+}
+
+.spreadsheet-cell.schedule-cell-operator{
+    -fx-background-color: #ffffb3;
+
+}
+
+.spreadsheet-cell.schedule-cell-courier{
+    -fx-background-color: #ffe6cc;
+}
+
+.spreadsheet-cell.schedule-cell-anotherKitchen{
+    -fx-background-color: #e0e0d1;
+    -fx-text-fill: #555;
+}
+
+.spreadsheet-cell.schedule-cell{
+    -fx-alignment: center
+}
+
+.spreadsheet-cell.errorOutOfWorkingHours{
+    -fx-text-fill: red;
+}
+
+.spreadsheet-cell.errorTime{
+    -fx-text-fill: red;
+}
+
+.spreadsheet-cell.errorStartTimeEqualsEndTime{
+    -fx-text-fill: red;
+}
+
+.spreadsheet-cell.errorSymbol{
+    -fx-text-fill: red;
+}
+
+.spreadsheet-cell.nonActive{
+    -fx-text-fill: grey;
+}
+
+.spreadsheet-cell.active{
+    -fx-text-fill: black;
+}
 
 
 .spreadsheet-cell.number-cell {
@@ -17,6 +67,18 @@
 
 .spreadsheet-cell.closed-cell {
     -fx-background-color: #ccd0cc;
+}
+
+.spreadsheet-cell.closed-cell-yellow {
+    -fx-background-color: #ffff66;
+}
+
+.spreadsheet-cell.closed-cell-orange {
+    -fx-background-color: #ffb266;
+}
+
+.spreadsheet-cell.closed-cell-red {
+    -fx-background-color: #ff6666;
 }
 
 .spreadsheet-cell.ingredient-cell {

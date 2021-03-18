@@ -1,15 +1,23 @@
 package ua.com.pandasushi.database.site.dao;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import command.Command;
 import ua.com.pandasushi.database.common.*;
+import ua.com.pandasushi.database.common.inventory.CalculatedNetto;
+import ua.com.pandasushi.database.common.inventory.InvCafeSelect;
+import ua.com.pandasushi.database.common.inventory.InvSelect;
 import ua.com.pandasushi.database.common.menu.*;
+import ua.com.pandasushi.database.common.menu.cafe.TEHCARDS_CAFE;
 import ua.com.pandasushi.main.GlobalPandaApp;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -50,6 +58,8 @@ public class NewDAOSiteImpl implements DAOSite {
             result = ois.readObject();
 
 
+        } catch (EOFException e) {
+            //e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -263,7 +273,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean alreadyInventory() {
+    public Boolean alreadyInventory() {
         boolean result = true;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -366,7 +376,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap) {
+    public Boolean saveInventory(LinkedHashMap<Integer, ArrayList<Inventory>> inventoryMap) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -416,7 +426,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveRozrobka(Rozrobka rozrobka) {
+    public Boolean saveRozrobka(Rozrobka rozrobka) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -434,7 +444,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public boolean saveOperations(ArrayList<Operations> opList) {
+    public Boolean saveOperations(ArrayList<Operations> opList) {
         boolean result = false;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -486,7 +496,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public float getDebt(Integer checkID) {
+    public Float getDebt(Integer checkID) {
         float result = 0.0f;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -655,7 +665,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public float getNewAvgCoef(Integer prodId) {
+    public Float getNewAvgCoef(Integer prodId) {
         float result = 0.0f;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -775,7 +785,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
+    public Integer getSumProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -792,7 +802,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
+    public Integer getSumU1ProdPurchase(Date from, Date to, Integer productId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -826,7 +836,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
+    public Integer getSumProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
         int result = 0;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -843,7 +853,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
+    public Integer getSumU1ProdShift(Date from, Date to, Integer prodIngId, Integer kitchId) {
         Integer result = null;
         Command command = new Command();
         command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -882,7 +892,7 @@ public class NewDAOSiteImpl implements DAOSite {
     }
 
     @Override
-    public int getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId) {
+    public Integer getIngredientConsumption(Date from, Date to, Integer ingredientId, Integer kitchId) {
         Integer result = null;
 
         Command command = new Command();
@@ -900,6 +910,7 @@ public class NewDAOSiteImpl implements DAOSite {
         return result;
     }
 
+
     @Override
     public ArrayList<Consumption> getIngredientConsumptionList(Date from, Date to, Integer ingredientId, Integer kitch) {
         ArrayList<Consumption> result = new ArrayList<>();
@@ -909,6 +920,23 @@ public class NewDAOSiteImpl implements DAOSite {
         command.setArguments(new Object[]{from, to, ingredientId, kitch});
         try {
             result = (ArrayList<Consumption>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<ConsumptionCafe> getIngredientConsumptionCafeList(Date from, Date to, Integer ingredientId, Integer kitch) {
+        ArrayList<ConsumptionCafe> result = new ArrayList<>();
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{from.getClass(), to.getClass(), ingredientId.getClass(), kitch.getClass()});
+        command.setArguments(new Object[]{from, to, ingredientId, kitch});
+        try {
+            result = (ArrayList<ConsumptionCafe>) sendCommand(command);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -1233,6 +1261,773 @@ public class NewDAOSiteImpl implements DAOSite {
         command.setArguments(new Object[]{});
         try {
             result = (ArrayList<GROUPS_LIB>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getAllEmployees() {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule() {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule(Integer kitchId) {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class});
+        command.setArguments(new Object[]{kitchId});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Employee> getEmployeesForSchedule(String position) {
+        ArrayList<Employee> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{String.class});
+        command.setArguments(new Object[]{position});
+        try {
+            result = (ArrayList<Employee>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public KitchProperties getKitchProperty(LocalDate date, Integer kitch) {
+        KitchProperties result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, Integer.class});
+        command.setArguments(new Object[]{date, kitch});
+        try {
+            result = (KitchProperties) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getSchedule(Integer kitchId, LocalDate date, Boolean plan) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, LocalDate.class, Boolean.class});
+        command.setArguments(new Object[]{kitchId, date, plan});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getScheduleBetween(Integer kitchId, LocalDate start, LocalDate end, Boolean plan) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Schedule> getEmployeeWorkDays(Integer employeeId, LocalDate start, LocalDate end, Boolean plan) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, LocalDate.class, LocalDate.class, Boolean.class});
+        command.setArguments(new Object[]{employeeId, start, end, plan});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public HashMap<LocalDate, HashMap<Integer, Schedule>> getSceduleMapPlan(LocalDate start, LocalDate end, String position) {
+        HashMap<LocalDate, HashMap<Integer, Schedule>> result = new HashMap<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, LocalDate.class, String.class});
+        command.setArguments(new Object[]{start, end, position});
+        try {
+            result = (HashMap<LocalDate, HashMap<Integer, Schedule>>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getSceduleListFact(LocalDate date, Integer kitchId) {
+        ArrayList<Schedule> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{LocalDate.class, Integer.class});
+        command.setArguments(new Object[]{date, kitchId});
+        try {
+            result = (ArrayList<Schedule>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public void saveSchedule(Schedule schedule) {
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Schedule.class});
+        command.setArguments(new Object[]{schedule});
+        try {
+            sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Float getIngCost() {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getIngCost(ArrayList<Inventory> list) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{ArrayList.class});
+        command.setArguments(new Object[]{list});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getProperty(String property) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{String.class});
+        command.setArguments(new Object[]{property});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InvSelect> fillTodayInventory() {
+        ArrayList<InvSelect> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<InvSelect>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Calendar[] getDayLimits(Calendar day) {
+        Calendar[] result = null;
+
+        Command command = new Command();
+            command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+            command.setArgumentTypes(new Class[]{Calendar.class});
+            command.setArguments(new Object[]{day});
+            try {
+            result = (Calendar[]) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public CalculatedNetto getCalculatedNettoOnDate(Integer kitchen, Integer ingId, Calendar date) {
+        CalculatedNetto result = new CalculatedNetto();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Calendar.class});
+        command.setArguments(new Object[]{kitchen, ingId, date});
+        try {
+            result = (CalculatedNetto) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Calendar getLastInventoryDate(Integer kitchen, Integer ingId, Calendar date) {
+        return null;
+    }
+
+    @Override
+    public Integer getInventoryNettoOnDate(Integer kitchen, Integer ingId, Calendar date) {
+        return null;
+    }
+
+    @Override
+    public Integer getProductPurchaseNettoBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoShiftBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoWriteOffBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getDiffProcessingBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Integer getNettoConsumptionBetweenDates(Integer kitchen, Integer ingId, Calendar start, Calendar end) {
+        return null;
+    }
+
+    @Override
+    public Float getCoefToNettoOnDate(Integer prodIngId, Calendar date) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Calendar.class});
+        command.setArguments(new Object[]{prodIngId,date});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getCoefNf(Integer ingId, Integer nfId) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class});
+        command.setArguments(new Object[]{ingId,nfId});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getIngredientCostOnDate(Integer ingId, Calendar date, String city) {
+        return getIngredientCostOnDate(null, ingId, date, city);
+    }
+
+    @Override
+    public Float getIngredientCostOnDate(Integer nettoLeft, Integer ingId, Calendar date, String city) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Calendar.class, String.class});
+        command.setArguments(new Object[]{nettoLeft, ingId, date, city});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public HashMap<Integer, HashMap<Integer, Integer>> getStatsForMobile(Date from, Date to) {
+        return null;
+    }
+
+    @Override
+    public Float getPrice(Integer id, Calendar date) {
+        Float result = 0.0f;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Calendar.class});
+        command.setArguments(new Object[]{id, date});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<INGREDIENTS> getIngsForReport() {
+        ArrayList<INGREDIENTS> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<INGREDIENTS>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public InventoryBalance getLastInvBalance(Integer kitch, Integer ingredientId) {
+        InventoryBalance result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class});
+        command.setArguments(new Object[]{kitch, ingredientId});
+        try {
+            result = (InventoryBalance) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public HashMap<Integer, HashMap<Integer, InventoryBalance>> getInventoryBalanceOnDate(Calendar date) {
+        HashMap<Integer, HashMap<Integer, InventoryBalance>> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Calendar.class});
+        command.setArguments(new Object[]{date});
+        try {
+            result = (HashMap<Integer, HashMap<Integer, InventoryBalance>>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public LinkedHashMap<Integer, ArrayList<InventoryCafe>> getTodayCafeInventory(Calendar cal) {
+        LinkedHashMap<Integer, ArrayList<InventoryCafe>> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Calendar.class});
+        command.setArguments(new Object[]{cal});
+        try {
+            result = (LinkedHashMap<Integer, ArrayList<InventoryCafe>>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public CalculatedNetto getCalculatedNettoCafeOnDate(Integer kitch_id, Integer i, Calendar instance) {
+        CalculatedNetto result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Calendar.class});
+        command.setArguments(new Object[]{kitch_id, i, instance});
+        try {
+            result = (CalculatedNetto) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Boolean saveCafeInventory(LinkedHashMap<Integer, ArrayList<InventoryCafe>> inventoryMap) {
+        Boolean result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{inventoryMap.getClass()});
+        command.setArguments(new Object[]{inventoryMap});
+        try {
+            result = (Boolean) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Integer getNextCafeInventoryCheckId() {
+        Integer result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (Integer) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InventoryCafe> getLastCafeInventory(Integer ingredientId, Integer kitch_id) {
+        ArrayList<InventoryCafe> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class});
+        command.setArguments(new Object[]{ingredientId, kitch_id});
+        try {
+            result = (ArrayList<InventoryCafe>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InventoryCafe> getLastCafeInventory(Integer basicIng, Integer checkId, Integer kitchen) {
+        ArrayList<InventoryCafe> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class, Integer.class});
+        command.setArguments(new Object[]{basicIng, checkId, kitchen});
+        try {
+            result = (ArrayList<InventoryCafe>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InvCafeSelect> fillTodayCafeInventory() {
+        ArrayList<InvCafeSelect> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<InvCafeSelect>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InventoryCafe> getAllCafeInventory() {
+        ArrayList<InventoryCafe> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<InventoryCafe>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<InventoryCafe> getInventoryCafeList(Integer checkId) {
+        ArrayList<InventoryCafe> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class});
+        command.setArguments(new Object[]{checkId});
+        try {
+            result = (ArrayList<InventoryCafe>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getIngCafeCost(ArrayList<InventoryCafe> cur) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{cur.getClass()});
+        command.setArguments(new Object[]{cur});
+        try {
+            result = (Float) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<INGREDIENTS> getCafeIngredients() {
+        ArrayList<INGREDIENTS> result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{});
+        command.setArguments(new Object[]{});
+        try {
+            result = (ArrayList<INGREDIENTS>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Integer getNettoConsumptionCafeBetweenDates(Integer ingId, Calendar lastInventoryDate, Calendar date) {
+        Integer result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Calendar.class, Calendar.class});
+        command.setArguments(new Object[]{ingId, lastInventoryDate, date});
+        try {
+            result = (Integer) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Boolean alreadyCafeInventory(Calendar cal) {
+        Boolean result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Calendar.class});
+        command.setArguments(new Object[]{cal});
+        try {
+            result = (Boolean) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<TEHCARDS_CAFE> getCafeNF(Integer ingredientId) {
+        ArrayList<TEHCARDS_CAFE> result = new ArrayList<>();
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{ ingredientId.getClass() });
+        command.setArguments(new Object[]{ ingredientId });
+        try {
+            result = (ArrayList<TEHCARDS_CAFE>) sendCommand(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Float getCoefCafeNf(Integer ingId, Integer nfId) {
+        Float result = null;
+
+        Command command = new Command();
+        command.setMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
+        command.setArgumentTypes(new Class[]{Integer.class, Integer.class});
+        command.setArguments(new Object[]{ingId,nfId});
+        try {
+            result = (Float) sendCommand(command);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

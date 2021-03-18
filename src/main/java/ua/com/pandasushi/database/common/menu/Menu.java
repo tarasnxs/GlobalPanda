@@ -1,13 +1,15 @@
 package ua.com.pandasushi.database.common.menu;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(include = "all", usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "LIB_MENU")
 public class Menu implements Serializable {
 
@@ -56,6 +58,9 @@ public class Menu implements Serializable {
 
 	@Column(name = "GROUP_ID")
 	private Integer group_id;
+	
+	@Column(name = "TRANSLIT")
+	private String translit;
 
 	public Menu() {
 		super();

@@ -520,6 +520,7 @@ public class ExcelService {
     }
 
     public static void fillProdSheet (Sheet prodSheet, Collection<Integer> cl) {
+
         try {
             Row header = prodSheet.createRow(2);
             header.createCell(0, Cell.CELL_TYPE_STRING).setCellValue("PRODUCT_NAME");

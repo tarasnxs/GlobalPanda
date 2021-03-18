@@ -22,6 +22,7 @@ public class Operations implements Serializable {
 	public static final int PRODUCT_PURCHASE = 400;
 	public static final int DEBT_PURCHASE = 1000;
 	public static final int PRODUCT_SHIFT = 500;
+	public static final int CASH_SHIFT = 600;
 	
 	@Id
 	@Column(name = "OPERATION_ID")

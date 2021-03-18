@@ -28,6 +28,8 @@ import org.controlsfx.control.spreadsheet.*;
 import ua.com.pandasushi.controller.MainController;
 import ua.com.pandasushi.controller.TabController;
 import ua.com.pandasushi.database.common.Inventory;
+import ua.com.pandasushi.database.common.inventory.CalculatedNetto;
+import ua.com.pandasushi.database.common.inventory.InvSelect;
 import ua.com.pandasushi.database.common.menu.INGREDIENTS;
 import ua.com.pandasushi.database.common.menu.PRODUCTS;
 import ua.com.pandasushi.database.common.menu.PRODUCTS_INGREDIENTS;
@@ -46,6 +48,9 @@ import java.util.*;
  */
 public class InventoryTabController implements TabController, EventHandler<ActionEvent> {
     boolean total = false;
+
+    private static final int RED_ZONE = 300;
+    private static final int ORANGE_ZONE = 100;
 
 
     private ArrayList<INGREDIENTS> selectedIngs;
@@ -87,7 +92,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             report.setDisable(true);
         }
 
-        if ( GlobalPandaApp.config.getOperator().getName().equals("Роман Скрип") ) {
+        if ( GlobalPandaApp.config.getOperator().getName().equals("Роман Скрип") || GlobalPandaApp.config.getOperator().getName().equals("Світлана Стасюк") ) {
             selectProducts.setDisable(false);
             report.setDisable(false);
         }
@@ -181,7 +186,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         String formatU1 = "";
         String formatU2 = "";
 
-        if (inv.getProdIngId() < 1700) {
+        if (inv.getProdIngId() < 1700 || (inv.getProdIngId() >= 1900 && inv.getProdIngId() < 3000)) {
             item.getStyleClass().add("inv-ing");
             formatU1 = "#,###";
             System.out.println(inv.getProdIngName());
@@ -218,7 +223,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             s2u2.setEditable(true);
         } else if (inv.getProdIngId() > 3000) {
             item.getStyleClass().add("inv-prod");
+            System.out.println(inv.getProdIngName());
             PRODUCTS prod = products.get(inv.getProdIngName());
+            System.out.println(prod.getProductName());
             if (prod.getFirstUnits() == null || prod.getFirstUnits().isEmpty() || prod.getFirstUnits().equals(" ")) {
                 formatU1 = "#,###";
                 s1u1.setEditable(false);
@@ -255,6 +262,18 @@ public class InventoryTabController implements TabController, EventHandler<Actio
 
             s1u2.setFormat(formatU2);
             s2u2.setFormat(formatU2);
+
+            if (inv.getProdIngId().intValue() == 3050) {
+                s1u1.itemProperty().setValue(0);
+                s1u2.itemProperty().setValue(0);
+                s2u1.itemProperty().setValue(0);
+                s2u2.itemProperty().setValue(0);
+                s1u1.setEditable(false);
+                s1u2.setEditable(false);
+                s2u1.setEditable(false);
+                s2u2.setEditable(false);
+                "sdfd".toUpperCase();
+            }
         }
 
 
@@ -278,11 +297,23 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             s2u2.getStyleClass().add("closed-cell");
             s2u2.itemProperty().setValue(inv.getFactU2());
         } else {
+            int diffUAH = Math.abs(inv.getDiffCompensation());
+            String c = "";
+            if (inv.getFactU2() == null) {
+                if (diffUAH >= RED_ZONE)
+                    c = "-red";
+                else if (diffUAH >= ORANGE_ZONE)
+                    c = "-orange";
+                else if (diffUAH > 0)
+                    c = "-yellow";
+                else
+                    c = "";
+            }
             s1u1.setEditable(false);
-            s1u1.getStyleClass().add("closed-cell");
+            s1u1.getStyleClass().add("closed-cell" + c);
             s1u1.itemProperty().setValue(inv.getAttemptU1());
             s1u2.setEditable(false);
-            s1u2.getStyleClass().add("closed-cell");
+            s1u2.getStyleClass().add("closed-cell" + c);
             s1u2.itemProperty().setValue(inv.getAttemptU2());
             if (inv.getFactU1() != null) {
                 s2u1.setEditable(false);
@@ -369,7 +400,6 @@ public class InventoryTabController implements TabController, EventHandler<Actio
     }
 
 
-
     private ObservableList<String> getProducts() {
         if (productIngredientsNames == null) {
             productIngredientsNames = FXCollections.observableArrayList();
@@ -382,8 +412,6 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             }
 
             for (INGREDIENTS ingredient : GlobalPandaApp.site.getIngredients()) {
-                if (ingredient.getIngredientId() >= 1900)
-                    continue;
                 productIngredientsNames.add(ingredient.getIngredientName());
                 ingredients.put(ingredient.getIngredientName(), ingredient);
                 System.out.println(ingredient.getIngredientName());
@@ -416,12 +444,40 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         fillInventoryMap();
 
         for (Integer i : inventoryMap.keySet()) {
-            int calcWeight = 0;
-            int calcCons = 0;
+            ArrayList<Inventory> invList = inventoryMap.get(i);
+            CalculatedNetto calcNetto = GlobalPandaApp.site.getCalculatedNettoOnDate(GlobalPandaApp.config.getKitchen().getKitch_id(), i, Calendar.getInstance());
+            for (Inventory inventory : invList) {
+                inventory.setPrevious(calcNetto.getLastInventoryDate().getTime());
+                inventory.setPreviousNetto(calcNetto.getLastInventoryNetto());
+                inventory.setProductPurchase(calcNetto.getProductPurchaseNetto());
+                inventory.setProductShift(calcNetto.getShiftNetto());
+                inventory.setWriteOffNetto(calcNetto.getWriteOffNetto());
+                inventory.setRozrobka(calcNetto.getDiffProcessing());
+                inventory.setRozhid(calcNetto.getConsumptionNetto());
+                inventory.setCalculatedNetto(calcNetto.getCalculatedNetto());
+                Float price = GlobalPandaApp.site.getPrice(i, Calendar.getInstance());
+                inventory.setIngPrice(price == null ? 0.0f : price);
+            }
+            invList.sort((o1, o2) -> {
+                if (o1.getProdIngId() < 1700)
+                    return 1;
+                else if (o2.getProdIngId() < 1700)
+                    return -1;
+                else if (o1.getProdIngId() < 1900)
+                    return 1;
+                else if (o2.getProdIngId() < 1900)
+                    return -1;
+                else
+                    return o1.getProdIngName().compareTo(o2.getProdIngName());
+            });
+        }
+
+        /*
+        for (Integer i : inventoryMap.keySet()) {
+            float calcWeight = 0;
+            float calcCons = 0;
             ArrayList<Inventory> list = inventoryMap.get(i);
             ArrayList<Inventory> previous = GlobalPandaApp.site.getLastInventory(i, GlobalPandaApp.config.getKitchen().getKitch_id());
-
-            System.out.println("\n##############\n" + i + " - " + list.get(0));
 
             if (!previous.isEmpty()) {
 
@@ -449,78 +505,64 @@ public class InventoryTabController implements TabController, EventHandler<Actio
 
                     if (inv.getProdIngId() < 1700) {
                         //INGREDIENT
-                        int ingShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
-                        int ingCons = GlobalPandaApp.site.getIngredientConsumption(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
+                        float ingShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
+                        float ingCons = GlobalPandaApp.site.getIngredientConsumption(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
 
-                        calcWeight += inv.getFactU2() != null ? inv.getFactU2() : 0;
-                        System.out.println("------Додаємо " + ( inv.getFactU2() != null ? inv.getFactU2() : 0 ) + " з попередньої інвентаризації");
+                        calcWeight += inv.getFactU2() != null ? inv.getFactU2().floatValue() : 0;
                         calcWeight += ingShift;
-                        System.out.println("------Додаємо " + ingShift + " з переміщення");
                         calcWeight -= ingCons;
-                        System.out.println("------Віднімаємо " + ingCons + " з розходу");
                         calcCons += ingCons;
 
-                        cur.setRozhid(ingCons * -1);
-                        cur.setProductShift(ingShift);
+                        cur.setRozhid(Math.round(ingCons * -1));
+                        cur.setProductShift(Math.round(ingShift));
                     } else if (inv.getProdIngId() > 1700 && inv.getProdIngId() < 1900) {
                         //NF
-                        int nfShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
-                        int nfCons = GlobalPandaApp.site.getIngredientConsumption(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
+                        float nfShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
+                        float nfCons = GlobalPandaApp.site.getIngredientConsumption(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
 
-                        int nfWeight = inv.getFactU2() != null ? inv.getFactU2() : 0;
-                        System.out.println("------Додаємо " + ( inv.getFactU2() != null ? inv.getFactU2() : 0 ) + " з попередньої інвентаризації");
+                        float nfWeight = inv.getFactU2() != null ? inv.getFactU2().floatValue() : 0;
                         nfWeight += nfShift;
-                        System.out.println("------Додаємо " + nfShift + " з переміщення");
                         nfWeight -= nfCons;
-                        System.out.println("------Віднімаємо " + nfCons + " з розходу");
                         ArrayList<TEHCARDS> tehcard = GlobalPandaApp.site.getTehcardsForDish(inv.getProdIngId());
-                        int countIng = 0;
-                        int totalWeight = 0;
+                        float countIng = 0;
+                        float totalWeight = 0;
                         for ( TEHCARDS tc : tehcard ) {
-                            totalWeight += tc.getFinalWeight();
+                            totalWeight += tc.getFinalWeight().floatValue();
                             if (tc.getIngredientId().equals(i))
-                                countIng = tc.getCount().intValue();
+                                countIng = tc.getCount().floatValue();
                         }
-                        System.out.println("------З коефіцієнтом " + (double) countIng / (double) totalWeight + " переводимо в інг. Рез : " + (int) ( (double) nfWeight * (double) countIng / (double) totalWeight ) );
-                        calcWeight += (int) ( (double) nfWeight * (double) countIng / (double) totalWeight );
-                        calcCons += (int) ( (double) nfCons * (double) countIng / (double) totalWeight );
-                        cur.setRozhid(nfCons * -1);
-                        cur.setProductShift(nfShift);
+                        float coef = totalWeight / countIng;
+                        calcWeight += nfWeight / coef;
+                        calcCons += nfCons / coef;
+                        if (cur != null) {
+                            cur.setRozhid(Math.round(nfCons * -1));
+                            cur.setProductShift(Math.round(nfShift));
+                        }
                     } else if (inv.getProdIngId() > 3000) {
                         //PRODUCT
-                        int prodPurch = GlobalPandaApp.site.getSumProdPurchase(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
-                        int prodShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
+                        float prodPurch = GlobalPandaApp.site.getSumProdPurchase(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
+                        float prodShift = GlobalPandaApp.site.getSumProdShift(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id()).floatValue();
                         ArrayList<Integer> rozrobka = GlobalPandaApp.site.getRozrobka(inv.getBegin(), list.get(0).getBegin(), inv.getProdIngId(), GlobalPandaApp.config.getKitchen().getKitch_id());
 
-                        int prodWeight = inv.getFactU2() != null ? inv.getFactU2() : 0;
-                        System.out.println("------Додаємо " + ( inv.getFactU2() != null ? inv.getFactU2() : 0 ) + " з попередньої інвентаризації");
+                        float prodWeight = inv.getFactU2() != null ? inv.getFactU2().floatValue() : 0;
 
                         //TODO int tushkaCount = inv.getFactU1();
                         prodWeight += prodPurch;
-                        System.out.println("------Додаємо " + prodPurch + " з приходу");
-
 
                         prodWeight += prodShift;
-                        System.out.println("------Додаємо " + prodShift + " з переміщення");
 
+                        prodWeight -= rozrobka.get(0).floatValue();
+                        calcWeight += rozrobka.get(1).floatValue();
 
-                        prodWeight -= rozrobka.get(0);
-                        calcWeight += rozrobka.get(1);
-
-                        System.out.println("------Розроблено " + rozrobka.get(0) + " отримано " + rozrobka.get(1));
                         PRODUCTS_INGREDIENTS prodIng = GlobalPandaApp.site.getProdIngForProd(inv.getProdIngName());
 
-                        System.out.println("------Вага продукту: " + prodWeight);
-
                         if (prodIng != null) {
-                            System.out.println("------Переводимо з коеф " + prodIng.getAvgCoef() + " отримуємо " + (int) ((double) prodWeight / (double) prodIng.getAvgCoef()));
-                            calcWeight += (int) ((double) prodWeight / (double) prodIng.getAvgCoef());
-
+                            calcWeight += prodWeight / prodIng.getAvgCoef().floatValue();
                         }
 
                         if (cur != null) {
-                            cur.setProductPurchase(prodPurch);
-                            cur.setProductShift(prodShift);
+                            cur.setProductPurchase(Math.round(prodPurch));
+                            cur.setProductShift(Math.round(prodShift));
                             cur.setRozrobka(rozrobka.get(0));
                             cur.setRozrobkaOut(rozrobka.get(1));
                         }
@@ -528,11 +570,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 }
             }
 
-            System.out.println("\n ------Порахована вага : " + calcWeight + " ------");
-
             for (Inventory inv : list) {
-                inv.setCalculatedNetto(calcWeight);
-                inv.setCalculatedCons(calcCons);
+                inv.setCalculatedNetto(Math.round(calcWeight));
+                inv.setCalculatedCons(Math.round(calcCons));
             }
 
             list.sort((o1, o2) -> {
@@ -547,7 +587,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 else
                     return o1.getProdIngName().compareTo(o2.getProdIngName());
             });
-        }
+        }*/
 
 
         if (GlobalPandaApp.site.saveInventory(inventoryMap)) {
@@ -571,22 +611,29 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 return true;
         if (GlobalPandaApp.site.getSumProdPurchase(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) > 0)
             return true;
-        if (GlobalPandaApp.site.getSumProdShift(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) > 0)
+        if (GlobalPandaApp.site.getSumProdShift(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) != 0)
             return true;
         return false;
     }
 
     private void fillInventoryMap () {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 9);
+        cal.set(Calendar.HOUR_OF_DAY, 10);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
         Calendar yearAgo = Calendar.getInstance();
         yearAgo.add(Calendar.YEAR, -1);
-        Date date = cal.getTime();
+        Date date = new Date();
         Date timeStart = new Date();
         Integer checkId = GlobalPandaApp.site.getNextInventoryCheckId();
         inventoryMap = new LinkedHashMap<>();
-        for (INGREDIENTS ing : getIngForInventory(GlobalPandaApp.site.getIngredientsInventory())) {
-            ArrayList<Inventory> previous = GlobalPandaApp.site.getLastInventory(ing.getIngredientId(), GlobalPandaApp.config.getKitchen().getKitch_id());
+        for (INGREDIENTS ing : getIngForInventory(GlobalPandaApp.site.getIngredients())) {
+            System.out.println(ing == null ? "NULL ING" : "ING ID = " + ing.getIngredientId() + " - " + ing.getIngredientName());
+            ArrayList<Inventory> previous =
+                    GlobalPandaApp.site.getLastInventory(
+                            ing.getIngredientId(),
+                            GlobalPandaApp.config.getKitchen().getKitch_id()
+                    );
             Date prevDate = previous.isEmpty() ? yearAgo.getTime() : previous.get(0).getBegin();
 
             inventoryMap.put(ing.getIngredientId(), new ArrayList<>());
@@ -635,50 +682,22 @@ public class InventoryTabController implements TabController, EventHandler<Actio
     }
 
     public ArrayList<INGREDIENTS> getIngForInventory (ArrayList<INGREDIENTS> list) {
-        list.sort((o1, o2) -> o1.getIngredientName().compareTo(o2.getIngredientName()));
+        list.sort(Comparator.comparing(INGREDIENTS::getIngredientName));
         if (total && selectedIngs != null)
             return selectedIngs;
 
+
+
         ArrayList<INGREDIENTS> result = new ArrayList<>();
-        HashSet<INGREDIENTS> setResult = new HashSet<>();
 
-        Random rnd = new Random();
-
-        HashMap<Integer, INGREDIENTS> ingImp = new HashMap<>();
-        int totalImp = 0;
+        HashMap<Integer, INGREDIENTS> ingMap = new HashMap<>();
         for (INGREDIENTS ing : list) {
-            switch (GlobalPandaApp.config.getKitchen().getKitch_id()) {
-                case 0:
-                    totalImp += ing.getSyhivImportance();
-                    ingImp.put(totalImp, ing);
-                    break;
-
-                case 1:
-                    totalImp += ing.getVarshavImportance();
-                    ingImp.put(totalImp, ing);
-                    break;
-
-                default:
-                    totalImp += ing.getSyhivImportance();
-                    ingImp.put(totalImp, ing);
-                    break;
-            }
+            ingMap.put(ing.getIngredientId(), ing);
         }
 
-        double avgImp = totalImp / list.size();
-        int count = avgImp > 40 ? 5 : 4;
+        for (InvSelect is : GlobalPandaApp.site.fillTodayInventory())
+            result.add(ingMap.get(is.getIngId()));
 
-        while (setResult.size() < count) {
-            int i = rnd.nextInt(totalImp);
-            int r = totalImp;
-            for (Integer imp : ingImp.keySet()) {
-                if ( imp > i && imp < r )
-                    r = imp;
-            }
-            setResult.add(ingImp.get(r));
-        }
-
-        result.addAll(setResult);
         return result;
     }
 
@@ -807,9 +826,8 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 //looking for row contains proding
                 for (ObservableList<SpreadsheetCell> row : table.getGrid().getRows()) {
                     if (row.get(0).getText().equals(inv.getProdIngName())) {
-
-
                         if (inv.getCalculatedNetto() == 0) {
+                            //FOR FIRST INVENTORY
                             if (row.get(1).getItem() != null && row.get(2).getItem() != null) {
                                 row.get(1).deactivateCorner(SpreadsheetCell.CornerPosition.TOP_RIGHT);
                                 row.get(2).deactivateCorner(SpreadsheetCell.CornerPosition.TOP_RIGHT);
@@ -871,55 +889,10 @@ public class InventoryTabController implements TabController, EventHandler<Actio
 
             }
 
-            float inputNetto = 0;
-            for (Inventory inv : inventoryMap.get(i)) {
-                System.out.println(" ---- Рахуємо введенне нето для " + inv.getProdIngName());
-
-                if (inv.getFirstAttempt() == null) {
-                    if (inv.getProdIngId() < 1700) {
-                        inputNetto += inv.getAttemptU2().floatValue();
-                        System.out.println("--------------Додаємо " + inv.getAttemptU2().floatValue() + " грам");
-                    } else if (inv.getProdIngId() < 1900) {
-                        float nfWeight = inv.getAttemptU2();
-                        ArrayList<TEHCARDS> tehcard = GlobalPandaApp.site.getTehcardsForDish(inv.getProdIngId());
-                        float countIng = 0;
-                        float totalWeight = 0;
-                        for ( TEHCARDS tc : tehcard ) {
-                            totalWeight += tc.getFinalWeight();
-                            if (tc.getIngredientId().equals(i))
-                                countIng = tc.getCount().intValue();
-                        }
-                        double coef = (double) totalWeight / (double) countIng;
-                        inputNetto += (double) nfWeight / coef ;
-                    } else if (inv.getProdIngId() > 3000) {
-                        float prodWeight = inv.getAttemptU2().floatValue();
-                        PRODUCTS_INGREDIENTS prodIng = GlobalPandaApp.site.getProdIngForProd(inv.getProdIngName());
-                        inputNetto += prodWeight / prodIng.getAvgCoef().floatValue() ;
-                    }
-                } else if (!inv.getFirstAttempt()) {
-                    if (inv.getProdIngId() < 1700) {
-                        inputNetto += inv.getFactU2().floatValue();
-                    } else if (inv.getProdIngId() < 1900) {
-                        int nfWeight = inv.getFactU2();
-                        ArrayList<TEHCARDS> tehcard = GlobalPandaApp.site.getTehcardsForDish(inv.getProdIngId());
-                        int countIng = 0;
-                        int totalWeight = 0;
-                        for ( TEHCARDS tc : tehcard ) {
-                            totalWeight += tc.getFinalWeight();
-                            if (tc.getIngredientId().equals(i))
-                                countIng = tc.getCount().intValue();
-                        }
-                        inputNetto += (double) nfWeight * (double) countIng / (double) totalWeight;
-                    } else if (inv.getProdIngId() > 3000) {
-                        float prodWeight = inv.getFactU2().floatValue();
-                        PRODUCTS_INGREDIENTS prodIng = GlobalPandaApp.site.getProdIngForProd(inv.getProdIngName());
-                        inputNetto += prodWeight / prodIng.getAvgCoef().floatValue() ;
-                    }
-                }
-            }
+            Float inputNetto = getInputNetto(inventoryMap.get(i));
 
             float calculatedNetto = inventoryMap.get(i).get(0).getCalculatedNetto().floatValue();
-            float calculatedCons = inventoryMap.get(i).get(0).getCalculatedCons().floatValue();
+            float calculatedCons = inventoryMap.get(i).get(0).getRozhid().floatValue();
             float diffNetto = inputNetto - calculatedNetto;
             float diffPercent;
             if (calculatedCons != 0.0f)
@@ -928,20 +901,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 diffPercent = 100 * diffNetto / ( inventoryMap.get(i).get(0).getAttemptU2().floatValue() != 0 ? inventoryMap.get(i).get(0).getAttemptU2().floatValue() : 1);
             }
 
+            float cpu = inventoryMap.get(i).get(0).getIngPrice();
 
-            float avgCoef = 0.0f;
-            float avgCPU = 0.0f;
-
-            ArrayList<PRODUCTS_INGREDIENTS> prodIngs = GlobalPandaApp.site.getProdForIng(inventoryMap.get(i).get(0).getBasicIng());
-
-            for (PRODUCTS_INGREDIENTS prodIng : prodIngs ) {
-                avgCoef += prodIng.getAvgCoef().floatValue();
-                avgCPU += prodIng.getAvgPrice().floatValue();
-            }
-            avgCoef /= (float) prodIngs.size();
-            avgCPU /= (float) prodIngs.size();
-
-            float diffUAH = (diffNetto / avgCoef) * (avgCPU / 1000);
+            float diffUAH = diffNetto * cpu;
 
             Inventory temp = inventoryMap.get(i).get(0);
             if (temp.getFirstAttempt() == null && Math.abs(diffPercent) <= 5) {
@@ -951,8 +913,9 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             }
 
             for (Inventory inv : inventoryMap.get(i)) {
+                inv.setInputNetto(inputNetto.intValue());
                 if ( inv.getFirstAttempt() == null ) {
-                    if (Math.abs(diffPercent) < 5) {
+                    if (Math.abs(diffPercent) <= 5) {
                         inv.setDiffUah( (int) diffUAH);
                         inv.setDiffCompensation(0);
                         inv.setDiffNetto( (int) diffNetto);
@@ -963,22 +926,22 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                         inv.setFactU2(inv.getAttemptU2());
                     } else {
                         checked = false;
-                        float diffComp = ( Math.abs(diffUAH) / diffPercent ) * (Math.abs(diffPercent) - 5);
-                        inv.setDiffUah( (int) diffUAH);
-                        inv.setDiffCompensation( (int) diffComp);
-                        inv.setDiffNetto( (int) diffNetto);
+                        float diffComp = ( diffUAH / Math.abs(diffPercent) ) * (Math.abs(diffPercent) - 5);
+                        inv.setDiffUah( Math.round(diffUAH) );
+                        inv.setDiffCompensation( Math.round(diffComp) );
+                        inv.setDiffNetto( Math.round(diffNetto) );
                         inv.setDiffPercent(diffPercent);
                         inv.setFirstAttempt(false);
                     }
                 } else {
-                    if (Math.abs(diffPercent) < 5) {
+                    if (Math.abs(diffPercent) <= 5) {
                         inv.setDiffUah( (int) diffUAH);
                         inv.setDiffCompensation(0);
                         inv.setDiffNetto( (int) diffNetto);
                         inv.setDiffPercent(diffPercent);
                         inv.setEnd(date);
                     } else {
-                        float diffComp = ( Math.abs(diffUAH) / diffPercent ) * (Math.abs(diffPercent) - 5);
+                        float diffComp = ( diffUAH / Math.abs(diffPercent) ) * (Math.abs(diffPercent) - 5);
                         inv.setDiffUah( (int) diffUAH);
                         inv.setDiffCompensation( (int) diffComp);
                         inv.setDiffNetto( (int) diffNetto);
@@ -1002,6 +965,40 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             }
         }
         progressToDb.setVisible(false);
+    }
+
+    private float getInputNetto (ArrayList<Inventory> list) {
+        float inputNetto = 0.0f;
+
+        for (Inventory inv : list) {
+            if (inv.getFirstAttempt() == null) {
+                if (inv.getProdIngId() < 1700) {
+                    inputNetto += inv.getAttemptU2().floatValue();
+                } else if (inv.getProdIngId() < 1900) {
+                    float nfWeight = inv.getAttemptU2();
+                    float coef = GlobalPandaApp.site.getCoefNf(inv.getBasicIng(),inv.getProdIngId());
+                    inputNetto += nfWeight / coef ;
+                } else if (inv.getProdIngId() > 3000) {
+                    float prodWeight = inv.getAttemptU2().floatValue();
+                    float coef = GlobalPandaApp.site.getCoefToNettoOnDate(inv.getProdIngId(), Calendar.getInstance());
+                    inputNetto += prodWeight / coef;
+                }
+            } else {
+                if (inv.getProdIngId() < 1700) {
+                    inputNetto += inv.getFactU2().floatValue();
+                } else if (inv.getProdIngId() < 1900) {
+                    float nfWeight = inv.getFactU2();
+                    float coef = GlobalPandaApp.site.getCoefNf(inv.getBasicIng(),inv.getProdIngId());
+                    inputNetto += nfWeight / coef;
+                } else if (inv.getProdIngId() > 3000) {
+                    float prodWeight = inv.getFactU2().floatValue();
+                    float coef = GlobalPandaApp.site.getCoefToNettoOnDate(inv.getProdIngId(), Calendar.getInstance());
+                    inputNetto += prodWeight / coef ;
+                }
+            }
+        }
+
+        return inputNetto;
     }
 
     public void makeReport(ActionEvent event) {
@@ -1111,7 +1108,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             ArrayList<Inventory> list = new ArrayList<>();
             list.add(inv);
             for (Inventory inventory : invents.getItems()) {
-                if (inventory.getCheckId() > inv.getCheckId())
+                if (inventory.getEnd().after(inv.getBegin()))
                     list.add(inventory);
             }
             irt.setInv(list);
@@ -1136,7 +1133,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(initFileName);
         String userDir = System.getProperty("user.home");
-        fileChooser.setInitialDirectory(new File(userDir +"/Desktop"));
+        fileChooser.setInitialDirectory(new File(userDir));
         fileChooser.setTitle("Зберегти звіт...");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);
@@ -1147,6 +1144,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             return new File("temp.xlsx");
         }
     }
+
 
     private class ListItem {
         private final StringProperty name = new SimpleStringProperty();
@@ -1186,4 +1184,5 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             return getName();
         }
     }
+
 }

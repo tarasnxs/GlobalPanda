@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="scheduleFact" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"  xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.pandasushi.controller.control.schedule.ScheduleFactController">
+    <children>
+        <ChoiceBox fx:id="kitchSelectFact" prefWidth="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+        <DatePicker fx:id="dateSelectFact" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="10.0" />
+        <Button mnemonicParsing="false" onAction="#writeToDBFact" text="Записати в БД" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
+    </children>
+</AnchorPane>

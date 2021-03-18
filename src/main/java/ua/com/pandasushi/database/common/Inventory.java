@@ -1,18 +1,20 @@
 package ua.com.pandasushi.database.common;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by Тарас on 15.03.2017.
  */
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(include = "all", usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "INVENTORY")
 public class Inventory implements Serializable {
 
@@ -74,11 +76,17 @@ public class Inventory implements Serializable {
     @Column( name = "FIRST_ATTEMPT" )
     private Boolean firstAttempt;
 
+    @Column( name = "PREVIOUS_NETTO" )
+    private Integer previousNetto;
+
     @Column( name = "PRODUCT_PURCHASE")
     private Integer productPurchase;
 
     @Column( name = "PRODUCT_SHIFT" )
     private Integer productShift;
+
+    @Column( name = "WRITE_OFF_NETTO" )
+    private Integer writeOffNetto;
 
     @Column( name = "ROZROBKA_OUT" )
     private Integer rozrobkaOut;
@@ -92,6 +100,9 @@ public class Inventory implements Serializable {
     @Column( name = "CALCULATED_NETTO" )
     private Integer calculatedNetto;
 
+    @Column( name = "INPUT_NETTO" )
+    private Integer inputNetto;
+
     @Column( name = "CALCULATED_CONS")
     private Integer calculatedCons;
 
@@ -101,6 +112,9 @@ public class Inventory implements Serializable {
     @Column( name = "DIFF_PERCENT" )
     private Float diffPercent;
 
+    @Column( name = "ING_PRICE")
+    private Float ingPrice;
+
     @Column( name = "DIFF_UAH" )
     private Integer diffUah;
 
@@ -109,8 +123,31 @@ public class Inventory implements Serializable {
 
     @Column( name = "COMMENT" )
     private String comment;
+    
+    @Column( name = "ADDED_IMPORTANCE" )
+    private Integer addedImportance;
+    
+    @Column( name = "BALANCE_IMPORTANCE" )
+    private Integer balanceImportance;
+    
 
-    public Long getInventoryId() {
+    public Integer getAddedImportance() {
+		return addedImportance;
+	}
+
+	public void setAddedImportance(Integer addedImportance) {
+		this.addedImportance = addedImportance;
+	}
+
+	public Integer getBalanceImportance() {
+		return balanceImportance;
+	}
+
+	public void setBalanceImportance(Integer balanceImportance) {
+		this.balanceImportance = balanceImportance;
+	}
+
+	public Long getInventoryId() {
         return inventoryId;
     }
 
@@ -373,10 +410,46 @@ public class Inventory implements Serializable {
                 kitch = "Варшавська";
                 break;
 
+            case 5:
+                kitch = "Садова";
+                break;
+
             default:
-                kitch = "???";
+                kitch = "Введіть назву кухні";
                 break;
         }
         return sdf.format(getBegin()) + " - " + kitch;
+    }
+
+    public Integer getPreviousNetto() {
+        return previousNetto;
+    }
+
+    public void setPreviousNetto(Integer previousNetto) {
+        this.previousNetto = previousNetto;
+    }
+
+    public Integer getWriteOffNetto() {
+        return writeOffNetto;
+    }
+
+    public void setWriteOffNetto(Integer writeOffNetto) {
+        this.writeOffNetto = writeOffNetto;
+    }
+
+    public Float getIngPrice() {
+        return ingPrice;
+    }
+
+    public void setIngPrice(Float ingPrice) {
+        this.ingPrice = ingPrice;
+    }
+
+    public Integer getInputNetto() {
+        return inputNetto;
+    }
+
+    public void setInputNetto(Integer inputNetto) {
+        this.inputNetto = inputNetto;
     }
 }
