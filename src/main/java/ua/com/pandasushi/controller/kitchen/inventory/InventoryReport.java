@@ -352,9 +352,6 @@ public class InventoryReport extends Task<Workbook> {
                     totalTushka += sumU1purchase;
                     row.getCell(7).setCellStyle(intNumStyle);
 
-                    row.createCell(8, Cell.CELL_TYPE_NUMERIC).setCellValue(GlobalPandaApp.site.getSumProdPurchase(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen()));
-                    row.getCell(8).setCellStyle(intNumStyle);
-
                     int sumU1shift = GlobalPandaApp.site.getSumU1ProdShift(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen());
                     row.createCell(11, Cell.CELL_TYPE_NUMERIC).setCellValue(sumU1shift);
                     totalTushka += sumU1shift;
@@ -376,7 +373,6 @@ public class InventoryReport extends Task<Workbook> {
                     row.getCell(17).setCellStyle(intNumStyle);
 
 
-
                     if (rozrobka.get(1) > 0) {
                         float coef = (float) rozrobka.get(0) / (float) rozrobka.get(1);
                         row.createCell(18, Cell.CELL_TYPE_NUMERIC).setCellValue(coef);
@@ -389,8 +385,7 @@ public class InventoryReport extends Task<Workbook> {
                     row.createCell(19, Cell.CELL_TYPE_NUMERIC).setCellValue(GlobalPandaApp.site.getIngredientConsumption(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen()));
                     row.getCell(19).setCellStyle(intNumStyle);
 
-                    row.createCell(22, Cell.CELL_TYPE_NUMERIC).
-                            setCellValue(c.getFactU1());
+                    row.createCell(22, Cell.CELL_TYPE_NUMERIC).setCellValue(c.getFactU1());
                     row.getCell(22).setCellStyle(intNumStyle);
 
                     row.createCell(23, Cell.CELL_TYPE_NUMERIC).setCellValue(c.getFactU2());
@@ -405,6 +400,9 @@ public class InventoryReport extends Task<Workbook> {
                         row.createCell(6, Cell.CELL_TYPE_NUMERIC).setCellValue(p.isPresent() ? p.get().getFactU2() : 0);
                         totalPrevious += p.isPresent() ? p.get().getFactU2() : 0;
                         row.getCell(6).setCellStyle(intNumStyle);
+
+                        row.createCell(8, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
+                        row.getCell(8).setCellStyle(intNumStyle);
 
                         row.createCell(9, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
                         row.getCell(9).setCellStyle(intNumStyle);
@@ -446,6 +444,9 @@ public class InventoryReport extends Task<Workbook> {
                         totalPrevious += p.isPresent() ? p.get().getFactU2().floatValue() / nfCoef : 0.0f;
                         row.getCell(6).setCellStyle(intNumStyle);
 
+                        row.createCell(8, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
+                        row.getCell(8).setCellStyle(intNumStyle);
+
                         row.createCell(9, Cell.CELL_TYPE_NUMERIC).setCellValue(0);
                         row.getCell(9).setCellStyle(floNumStyle);
 
@@ -479,7 +480,10 @@ public class InventoryReport extends Task<Workbook> {
                         row.getCell(25).setCellStyle(intNumStyle);
 
                     } else if (c.getProdIngId() > 3000) {
-                        float avgCoef = GlobalPandaApp.site.getAvgCoefProduct(c.getProdIngId());
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(c.getBegin());
+                        float avgCoef = GlobalPandaApp.site.getCoefToNettoOnDate(c.getProdIngId(), cal);
+                        //getAvgCoefProduct(c.getProdIngId());
 
                         row.createCell(5, Cell.CELL_TYPE_NUMERIC).setCellValue(p.isPresent() ? avgCoef : 0.0f);
                         row.getCell(5).setCellStyle(floNumStyle);
@@ -488,7 +492,14 @@ public class InventoryReport extends Task<Workbook> {
                         totalPrevious += p.isPresent() ? p.get().getFactU2().floatValue() / avgCoef : 0.0f;
                         row.getCell(6).setCellStyle(intNumStyle);
 
-                        int sumProdPurch = GlobalPandaApp.site.getSumProdPurchase(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen());
+                        int sumProdPurch = 0;
+                        ArrayList<Operations> ops = GlobalPandaApp.site.getReportProdPurchase(c.getPrevious(), c.getBegin(), c.getProdIngId(), c.getKitchen());
+                        for (Operations op : ops) {
+                            sumProdPurch += op.getFloatparameter4().intValue();
+                        }
+
+                        row.createCell(8, Cell.CELL_TYPE_NUMERIC).setCellValue(sumProdPurch);
+                        row.getCell(8).setCellStyle(intNumStyle);
 
                         row.createCell(9, Cell.CELL_TYPE_NUMERIC).setCellValue(sumProdPurch > 0 ? avgCoef : 0.0f);
                         row.getCell(9).setCellStyle(floNumStyle);
@@ -519,11 +530,6 @@ public class InventoryReport extends Task<Workbook> {
                         totalFact += (float) c.getFactU2() / avgCoef;
                         row.getCell(25).setCellStyle(intNumStyle);
 
-                        PRODUCTS_INGREDIENTS prIng = GlobalPandaApp.site.getProdIngForProd(c.getProdIngName());
-                        if (!prIng.getAuto()) {
-                            row.createCell(26, Cell.CELL_TYPE_NUMERIC).setCellValue(c.getFactU1() - totalTushka);
-                            row.getCell(26).setCellStyle(intNumStyle);
-                        }
                     }
 
                 }
@@ -531,24 +537,9 @@ public class InventoryReport extends Task<Workbook> {
                 Row totals = totalSheet.createRow(index++);
                 Row inDB = totalSheet.createRow(index++);
 
-                int importance = 0;
 
                 String finalIngName = ingName;
                 INGREDIENTS ing = ingredientsList.stream().filter(ingredients -> ingredients.getIngredientName().equals(finalIngName)).findFirst().get();
-
-                switch (cur.get(0).getKitchen().intValue()) {
-                    case 0 :
-                        importance = ing.getSyhivImportance();
-                        break;
-//
-//                    case 1 :
-//                        importance = ing.getVarshavImportance();
-//                        break;
-
-                    default :
-
-                        break;
-                }
 
 
                 Inventory temp = cur.get(0);

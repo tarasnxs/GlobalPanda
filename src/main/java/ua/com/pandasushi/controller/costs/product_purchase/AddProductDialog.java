@@ -16,6 +16,7 @@ import ua.com.pandasushi.database.common.menu.PRODUCTS;
 import ua.com.pandasushi.database.common.menu.PRODUCTS_INGREDIENTS;
 import ua.com.pandasushi.main.GlobalPandaApp;
 
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ import java.util.Date;
  */
 public class AddProductDialog {
     TextField nameProd;
+    TextField manufacter;
     ComboBox<String> unit1;
     ComboBox<String> unit2;
     TextField relation;
@@ -52,11 +54,12 @@ public class AddProductDialog {
         }
         Scene scene = null;
         if(parent != null) {
-            scene = new Scene(parent, 300, 350);
+            scene = new Scene(parent, 668, 350);
         }
 
         if(scene != null) {
             nameProd = (TextField) scene.lookup("#nameProd");
+            manufacter = (TextField) scene.lookup("#manufacter");
             unit1 = (ComboBox) scene.lookup("#unit1");
             unit2 = (ComboBox) scene.lookup("#unit2");
             relation = (TextField) scene.lookup("#relation");
@@ -72,12 +75,19 @@ public class AddProductDialog {
 
     void setFields () {
         nameProd.setText(name);
+        nameProd.setEditable(false);
+        manufacter.textProperty().addListener((observable, oldValue, newValue) -> buildProdName());
         unit1.getItems().addAll(GlobalPandaApp.site.getProdFirstUnits());
+        unit1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> buildProdName());
         unit2.getItems().addAll("гр", "мл");
+        unit2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> buildProdName());
         relation.textProperty().addListener(new IntFieldChangeListener(relation));
+        relation.textProperty().addListener((observable, oldValue, newValue) -> buildProdName());
         relation.setText("0");
+
         for(INGREDIENTS ing : ingredients)
             ingredient.getItems().add(ing.getIngredientName());
+        ingredient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> buildProdName());
         coef.textProperty().addListener(new FloatFieldChangeListener(coef));
         coef.setText("1.0");
         coef.setEditable(false);
@@ -131,5 +141,38 @@ public class AddProductDialog {
                 dialog.close();
             }
         });
+    }
+
+    void buildProdName() {
+        String prodName = "";
+        prodName += ingredient.getSelectionModel().getSelectedItem() + " ";
+        prodName += "*" + manufacter.getText();
+        prodName += ", ";
+        float rel = Float.parseFloat(relation.getText());
+        if (rel != 0) {
+            prodName += "1" + unit1.getSelectionModel().getSelectedItem() + "/";
+            if (rel < 1000)
+                prodName += relation.getText() + unit2.getSelectionModel().getSelectedItem();
+            else {
+                float kgRel = rel / 1000;
+                if (unit2.getSelectionModel().getSelectedItem().equals("гр")) {
+                    if (rel%1000 == 0) {
+                        prodName += String.valueOf((int)kgRel) + "кг";
+                    } else {
+                        prodName += String.valueOf(kgRel) + "кг";
+                    }
+                } else {
+                    if (rel%1000 == 0) {
+                        prodName += String.valueOf((int)kgRel) + "л";
+                    } else {
+                        prodName += String.valueOf(kgRel) + "л";
+                    }
+                }
+            }
+        } else {
+            prodName += "ваговий";
+        }
+
+        nameProd.setText(prodName);
     }
 }

@@ -240,10 +240,30 @@ class PdfMaker {
         tabSigns.setFixedHeight(check.getPageSize().getHeight());
         tabSigns.addElement(signs);
 
+        String kitchName;
+        switch (productList.get(0).getKitchen()) {
+            case 0:
+                kitchName = "Сихів";
+                break;
+            case 1:
+                kitchName = "Варшавська";
+                break;
+            case 5:
+                kitchName = "Садова";
+                break;
+            case 7:
+                kitchName = "Кафе (Чорновола)";
+                break;
+            default:
+                kitchName = "" + productList.get(0).getKitchen();
+                break;
+        }
+
         PdfPCell info;
         if(pageNumber < 1) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-            info = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
+
+            info = new PdfPCell(new Phrase(kitchName + sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
             info.setRotation(270);
             info.setFixedHeight(check.getPageSize().getHeight());
             info.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -252,7 +272,7 @@ class PdfMaker {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
             PdfPTable infoTab = new PdfPTable(2);
-            PdfPCell checkNum = new PdfPCell(new Phrase(sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
+            PdfPCell checkNum = new PdfPCell(new Phrase(kitchName + sdf.format(productList.get(0).getDate()) + " - Квитанція № " + productList.get(0).getCheckId(), hFont));
             PdfPCell pageNum = new PdfPCell(new Phrase("Сторінка № " + pageNumber + "/" + pageCount, hFont ));
             checkNum.setHorizontalAlignment(Element.ALIGN_RIGHT);
             pageNum.setHorizontalAlignment(Element.ALIGN_LEFT);

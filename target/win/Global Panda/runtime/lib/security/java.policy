@@ -45,10 +45,5 @@ grant {
         permission java.util.PropertyPermission "java.vm.version", "read";
         permission java.util.PropertyPermission "java.vm.vendor", "read";
         permission java.util.PropertyPermission "java.vm.name", "read";
-		permission java.util.PropertyPermission "*", "read,write";
-		permission javax.management.MBeanServerPermission "createMBeanServer";
-		permission javax.management.MBeanTrustPermission "register";
-		permission javax.management.MBeanPermission "*", "registerMBean,unregisterMBean";
-		permission java.net.SocketPermission "localhost:1337", "listen,resolve";
 };
 

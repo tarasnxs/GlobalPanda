@@ -2,8 +2,10 @@ package ua.com.pandasushi.database.site.dao;
 
 import ua.com.pandasushi.database.common.*;
 import ua.com.pandasushi.database.common.inventory.CalculatedNetto;
+import ua.com.pandasushi.database.common.inventory.InvCafeSelect;
 import ua.com.pandasushi.database.common.inventory.InvSelect;
 import ua.com.pandasushi.database.common.menu.*;
+import ua.com.pandasushi.database.common.menu.cafe.TEHCARDS_CAFE;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -117,6 +119,8 @@ public interface DAOSite extends Serializable {
 
     ArrayList<Consumption> getIngredientConsumptionList(Date from, Date to, Integer ingredientId, Integer kitch);
 
+    ArrayList<ConsumptionCafe> getIngredientConsumptionCafeList(Date from, Date to, Integer ingredientId, Integer kitch);
+
     ArrayList<Integer> getRozrobka(Date from, Date to, Integer productId, Integer kitchId);
 
     ArrayList<Rozrobka> getRozrobkas(Date from, Date to, Integer productId, Integer kitchId);
@@ -203,10 +207,49 @@ public interface DAOSite extends Serializable {
 
     Float getCoefNf(Integer ingId, Integer nfId);
 
+    Float getCoefCafeNf(Integer ingId, Integer nfId);
+
     Float getIngredientCostOnDate(Integer ingId, Calendar date, String city);
 
     Float getIngredientCostOnDate(Integer nettoLeft, Integer ingId, Calendar date, String city);
 
     HashMap<Integer, HashMap<Integer, Integer>> getStatsForMobile(Date from, Date to);
 
+    Float getPrice(Integer id, Calendar date);
+
+    ArrayList<INGREDIENTS> getIngsForReport();
+
+    InventoryBalance getLastInvBalance(Integer kitch, Integer ingredientId);
+
+    HashMap<Integer, HashMap<Integer, InventoryBalance>> getInventoryBalanceOnDate(Calendar date);
+    
+    //CAFE INVENTORY METHODS
+
+    LinkedHashMap<Integer, ArrayList<InventoryCafe>> getTodayCafeInventory(Calendar cal);
+
+    CalculatedNetto getCalculatedNettoCafeOnDate(Integer kitch_id, Integer i, Calendar instance);
+
+    Boolean saveCafeInventory(LinkedHashMap<Integer, ArrayList<InventoryCafe>> inventoryMap);
+
+    Integer getNextCafeInventoryCheckId();
+
+    ArrayList<InventoryCafe> getLastCafeInventory(Integer ingredientId, Integer kitch_id);
+
+    ArrayList<InventoryCafe> getLastCafeInventory(Integer basicIng, Integer checkId, Integer kitchen);
+
+    ArrayList<InvCafeSelect> fillTodayCafeInventory();
+
+    ArrayList<InventoryCafe> getAllCafeInventory();
+
+    ArrayList<InventoryCafe> getInventoryCafeList(Integer checkId);
+
+    Float getIngCafeCost(ArrayList<InventoryCafe> cur);
+
+    ArrayList<INGREDIENTS> getCafeIngredients();
+
+    Integer getNettoConsumptionCafeBetweenDates(Integer ingId, Calendar lastInventoryDate, Calendar date);
+
+    Boolean alreadyCafeInventory(Calendar cal);
+
+    ArrayList<TEHCARDS_CAFE> getCafeNF(Integer ingredientId);
 }

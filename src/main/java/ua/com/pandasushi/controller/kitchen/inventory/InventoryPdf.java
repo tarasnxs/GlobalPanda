@@ -114,7 +114,7 @@ public class InventoryPdf {
                 PdfPCell s1u2 = null;
                 PdfPCell s2u1 = null;
                 PdfPCell s2u2 = null;
-                if (inv.getProdIngId() < 1700) {
+                if (inv.getProdIngId() < 1700 || (inv.getProdIngId() >= 1900 && inv.getProdIngId() < 3000) ) {
                     prodIng = new PdfPCell(new Phrase(number++ + ". " + inv.getProdIngName(), iFont));
 
                     s1u1 = new PdfPCell();

@@ -186,7 +186,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         String formatU1 = "";
         String formatU2 = "";
 
-        if (inv.getProdIngId() < 1700) {
+        if (inv.getProdIngId() < 1700 || (inv.getProdIngId() >= 1900 && inv.getProdIngId() < 3000)) {
             item.getStyleClass().add("inv-ing");
             formatU1 = "#,###";
             System.out.println(inv.getProdIngName());
@@ -412,8 +412,6 @@ public class InventoryTabController implements TabController, EventHandler<Actio
             }
 
             for (INGREDIENTS ingredient : GlobalPandaApp.site.getIngredients()) {
-                if (ingredient.getIngredientId() >= 1900)
-                    continue;
                 productIngredientsNames.add(ingredient.getIngredientName());
                 ingredients.put(ingredient.getIngredientName(), ingredient);
                 System.out.println(ingredient.getIngredientName());
@@ -457,7 +455,8 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 inventory.setRozrobka(calcNetto.getDiffProcessing());
                 inventory.setRozhid(calcNetto.getConsumptionNetto());
                 inventory.setCalculatedNetto(calcNetto.getCalculatedNetto());
-                inventory.setIngPrice(GlobalPandaApp.site.getIngredientCostOnDate(i, Calendar.getInstance(), "Львів"));
+                Float price = GlobalPandaApp.site.getPrice(i, Calendar.getInstance());
+                inventory.setIngPrice(price == null ? 0.0f : price);
             }
             invList.sort((o1, o2) -> {
                 if (o1.getProdIngId() < 1700)
@@ -612,17 +611,19 @@ public class InventoryTabController implements TabController, EventHandler<Actio
                 return true;
         if (GlobalPandaApp.site.getSumProdPurchase(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) > 0)
             return true;
-        if (GlobalPandaApp.site.getSumProdShift(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) > 0)
+        if (GlobalPandaApp.site.getSumProdShift(prev.get(0).getBegin(), new Date(), productId, GlobalPandaApp.config.getKitchen().getKitch_id()) != 0)
             return true;
         return false;
     }
 
     private void fillInventoryMap () {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 9);
+        cal.set(Calendar.HOUR_OF_DAY, 10);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
         Calendar yearAgo = Calendar.getInstance();
         yearAgo.add(Calendar.YEAR, -1);
-        Date date = cal.getTime();
+        Date date = new Date();
         Date timeStart = new Date();
         Integer checkId = GlobalPandaApp.site.getNextInventoryCheckId();
         inventoryMap = new LinkedHashMap<>();
@@ -1132,7 +1133,7 @@ public class InventoryTabController implements TabController, EventHandler<Actio
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(initFileName);
         String userDir = System.getProperty("user.home");
-        fileChooser.setInitialDirectory(new File(userDir +"/Desktop"));
+        fileChooser.setInitialDirectory(new File(userDir));
         fileChooser.setTitle("Зберегти звіт...");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(extFilter);

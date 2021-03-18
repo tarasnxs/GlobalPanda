@@ -161,6 +161,17 @@ public class OrdersReport {
         h28.setCellValue("Повар");
         Cell h29 = header.createCell(24);
         h29.setCellValue("На час");
+        Cell h30 = header.createCell(25);
+        h30.setCellValue("Зона");
+        Cell h31 = header.createCell(26);
+        h31.setCellValue("Компенсація");
+        header.createCell(27).setCellValue("Зміна прийняла");
+        header.createCell(28).setCellValue("Зміна закрила");
+        header.createCell(29).setCellValue("Тип оплати");
+        header.createCell(30).setCellValue("Код WayForPay");
+        header.createCell(31).setCellValue("Кінцевий тип оплати");
+
+
         Row headero = ordersSheet.createRow(0);
         Cell ho1 = headero.createCell(0);
         ho1.setCellValue("Номер");
@@ -287,6 +298,18 @@ public class OrdersReport {
 
             Cell onTime = row.createCell(24);
             onTime.setCellValue(customer.isOnTime() ? "Так" : "Ні");
+
+            Cell zone = row.createCell(25);
+            zone.setCellValue(customer.getZone() == null ? "unknown" : customer.getZone());
+
+            Cell lateComp = row.createCell(26);
+            lateComp.setCellValue(customer.getCompensationAdded() != null && customer.getCompensationAdded() ? "Видано" : "-");
+
+            row.createCell(27).setCellValue(customer.getShiftOpen() == null ? "" : customer.getShiftOpen());
+            row.createCell(28).setCellValue(customer.getShiftClose() == null ? "" : customer.getShiftClose());
+            row.createCell(29).setCellValue(customer.getPaymentMethod() == null ? "" : customer.getPaymentMethod());
+            row.createCell(30).setCellValue(customer.getOnlinePaymentNumber() == null ? "" : (customer.getOnlinePaymentNumber() + ""));
+            row.createCell(31).setCellValue(customer.getFinalPaymentMethod() == null ? "" : (customer.getFinalPaymentMethod() + ""));
 
             for (int j = 0; j < customers.get(i).getOrdersSite().size(); j++) {
                 OrdersSite order = customers.get(i).getOrdersSite().get(j);

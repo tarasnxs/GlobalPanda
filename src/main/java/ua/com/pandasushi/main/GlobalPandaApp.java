@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.hibernate.cfg.Configuration;
 import ua.com.pandasushi.Config;
+import ua.com.pandasushi.controller.kitchen.CustomInventory;
 import ua.com.pandasushi.database.common.Employee;
 import ua.com.pandasushi.database.common.Kitchens;
 import ua.com.pandasushi.database.site.dao.DAOSite;
@@ -65,6 +66,11 @@ public class GlobalPandaApp extends Application {
         stage.hide();
         System.out.println(config.getKitchen().getName());
         System.out.println(config.getOperator().getName());
+
+        CustomInventory.printIngsWithProducts();
+
+
+
         AnchorPane parent = FXMLLoader.load(MainFX.class.getResource("/view/main/main.fxml"));
         Scene main = new Scene(parent, 1024, 768);
         main.getStylesheets().add(MainFX.class.getResource("/css/styles.css").toExternalForm());
@@ -128,6 +134,8 @@ public class GlobalPandaApp extends Application {
         kitchList.put("Варшавська", 1);
         kitchList.put("Списання", 2);
         kitchList.put("Садова", 5);
+        kitchList.put("Кафе (Чорновола)", 7);
+        kitchList.put("Заг. цех", 9);
         kitchen = new ComboBox<>();
         kitchen.getItems().addAll(kitchList.keySet());
         kitchen.getSelectionModel().select(0);
@@ -157,8 +165,18 @@ public class GlobalPandaApp extends Application {
                 kitchen.getSelectionModel().select("Садова");
                 kitchen.setDisable(true);
             }
-        }
 
+            if (loginReg.contains("chorn")) {
+                kitchen.getSelectionModel().select("Кафе (Чорновола)");
+                kitchen.setDisable(true);
+            }
+
+            if (loginReg.contains("zagotovka")) {
+                kitchen.getSelectionModel().select("Заг. цех");
+                kitchen.setDisable(true);
+            }
+
+        }
         Label label = new Label("Вхід");
         label.setFont(new Font("Arial Black", 16.0));
         AnchorPane.setTopAnchor(label, 10.0);

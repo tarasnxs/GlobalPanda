@@ -59,7 +59,14 @@ public class Employee implements Serializable {
 		
 	}
 
-	public boolean isActive() {
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+    public boolean isActive() {
 		return active;
 	}
 	

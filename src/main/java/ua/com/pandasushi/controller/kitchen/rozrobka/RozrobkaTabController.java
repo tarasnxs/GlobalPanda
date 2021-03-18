@@ -106,7 +106,7 @@ public class RozrobkaTabController implements TabController, EventHandler<Action
             for (PRODUCTS_INGREDIENTS product : productsIngList) {
                 productNames.add(product.getProductName());
                 PRODUCTS_INGREDIENTS test = products.put(product.getProductName(), product);
-                if (test != null)
+                if (test != null && !test.getProductName().equals("DELETED"))
                     System.err.println("DUPLICATE ROZROBKA ON PRODUCT " + test.getProductName() + " -" + test.getIngredientName() + " -" + product.getIngredientName());
             }
         }

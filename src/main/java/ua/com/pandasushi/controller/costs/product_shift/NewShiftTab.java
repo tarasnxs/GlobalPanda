@@ -39,7 +39,7 @@ import java.util.*;
 public class NewShiftTab implements EventHandler<ActionEvent> {
 
     private static MODE mode;
-    private static final  int COLUMN_COUNT = 8;
+    private static final  int COLUMN_COUNT = 9;
     private int ROW_COUNT = 52;
 
     private Tab tab;
@@ -120,6 +120,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         }
         table.getColumns().get(0).setPrefWidth(310.0);
         table.getColumns().get(7).setPrefWidth(180.0);
+        table.getColumns().get(8).setPrefWidth(250);
     }
 
     private void buildGrid(GridBase grid) {
@@ -181,6 +182,11 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
         receiver.getStyleClass().add("header-cell");
         headerCells.add(receiver);
 
+        SpreadsheetCell comment = SpreadsheetCellType.STRING.createCell(row, 8, 2, 1, "Коментар");
+        comment.setEditable(true);
+        comment.getStyleClass().add("header-cell");
+        headerCells.add(comment);
+
         return headerCells;
     }
 
@@ -215,7 +221,7 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
 
         headerCells.add(SpreadsheetCellType.STRING.createCell(row, 7, 1, 1, ""));
 
-
+        headerCells.add(SpreadsheetCellType.STRING.createCell(row, 8, 1, 1, ""));
         return headerCells;
     }
 
@@ -638,6 +644,11 @@ public class NewShiftTab implements EventHandler<ActionEvent> {
             }
         }
         dataCells.add(cook);
+
+        SpreadsheetCell comment = SpreadsheetCellType.STRING.createCell(row, 8, 1, 1, "");
+        comment.setEditable(true);
+        comment.getStyleClass().add("plain-cell");
+        dataCells.add(comment);
 
         return dataCells;
     }

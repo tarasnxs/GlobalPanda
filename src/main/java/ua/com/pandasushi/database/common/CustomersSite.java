@@ -15,7 +15,7 @@ public class CustomersSite implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "SITE_ID")
+    @Column(name = "SITE_ID", columnDefinition = "BIGINT(20)")
     private Long site_id;
 
     @Column(name = "CHARCODE")
@@ -132,17 +132,122 @@ public class CustomersSite implements Serializable {
     @Column(name = "MENU_ADDED")
     private Boolean menuAdded;
 
+    @Column(name = "DELIVER_AT_LON")
+    private Double deliveredLon;
+
+    @Column(name = "DELIVER_AT_LAT")
+    private Double deliveredLat;
+
+    @Column(name = "TRACK_ID")
+    private Long trackId;
+
+    @Column(name = "PROMOCODE_ID")
+    private Long promocodeId;
+
+    @Column(name = "COMPENSATION_COUNT")
+    private Integer compensationCount;
+
+    @Column(name = "COMPENSATION_EXPIRED")
+    private Date compensationExpired;
+
+    @Column(name = "GREEN_ZONE")
+    private Boolean greenZone;
+
+    @Column(name = "ZONE")
+    private String zone;
+
+    @Column(name = "COMPENSATION_ADDED")
+    private Boolean compensationAdded;
+
+    @Column(name = "COMPENSATION_USED")
+    private Boolean compensationUsed;
+
+    @Column(name = "DAYS_AFTER_LAST_ORDER")
+    private Integer daysAfterLastOrder;
+
+    @Column(name = "PAYMENT_METHOD")
+    private String paymentMethod;
+
+    @Column(name = "ONLINE_PAYMENT_NUMBER")
+    private Integer onlinePaymentNumber;
+
+    @Column(name = "SHIFT_OPEN")
+    private String shiftOpen;
+
+    @Column(name = "SHIFT_CLOSE")
+    private String shiftClose;
+
+    @Column(name = "FINAL_PAYMENT_METHOD")
+    private String finalPaymentMethod;
+
     @OneToMany(mappedBy = "customerSite", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @org.hibernate.annotations.ForeignKey(name = "none")
     private List<OrdersSite> ordersSite;
 
     public CustomersSite() {
 
     }
 
+    public String getFinalPaymentMethod() {
+        return finalPaymentMethod;
+    }
+
+    public void setFinalPaymentMethod(String finalPaymentMethod) {
+        this.finalPaymentMethod = finalPaymentMethod;
+    }
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
 
+
+    public Boolean getCompensationAdded() {
+        return compensationAdded;
+    }
+
+    public void setCompensationAdded(Boolean compensationAdded) {
+        this.compensationAdded = compensationAdded;
+    }
+
+    public Boolean getCompensationUsed() {
+        return compensationUsed;
+    }
+
+    public void setCompensationUsed(Boolean compensationUsed) {
+        this.compensationUsed = compensationUsed;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public Double getDeliveredLon() {
+        return deliveredLon;
+    }
+
+    public void setDeliveredLon(Double deliveredLon) {
+        this.deliveredLon = deliveredLon;
+    }
+
+    public Double getDeliveredLat() {
+        return deliveredLat;
+    }
+
+    public void setDeliveredLat(Double deliveredLat) {
+        this.deliveredLat = deliveredLat;
+    }
+
+    public Long getTrackId() {
+        return trackId;
+    }
+
+    public void setTrackId(Long trackId) {
+        this.trackId = trackId;
+    }
 
     public boolean isStartBonus() {
         return startBonus;
@@ -462,6 +567,78 @@ public class CustomersSite implements Serializable {
 
     public void setUsedBonus(int usedBonus) {
         this.usedBonus = usedBonus;
+    }
+
+    public Long getPromocodeId() {
+        return promocodeId;
+    }
+
+    public void setPromocodeId(Long promocodeId) {
+        this.promocodeId = promocodeId;
+    }
+
+    public Integer getCompensationCount() {
+        return compensationCount;
+    }
+
+    public void setCompensationCount(Integer compensationCount) {
+        this.compensationCount = compensationCount;
+    }
+
+    public Date getCompensationExpired() {
+        return compensationExpired;
+    }
+
+    public void setCompensationExpired(Date compensationExpired) {
+        this.compensationExpired = compensationExpired;
+    }
+
+    public Boolean getGreenZone() {
+        return greenZone;
+    }
+
+    public void setGreenZone(Boolean greenZone) {
+        this.greenZone = greenZone;
+    }
+
+    public Integer getDaysAfterLastOrder() {
+        return daysAfterLastOrder;
+    }
+
+    public void setDaysAfterLastOrder(Integer daysAfterLastOrder) {
+        this.daysAfterLastOrder = daysAfterLastOrder;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Integer getOnlinePaymentNumber() {
+        return onlinePaymentNumber;
+    }
+
+    public void setOnlinePaymentNumber(Integer onlinePaymentNumber) {
+        this.onlinePaymentNumber = onlinePaymentNumber;
+    }
+
+    public String getShiftOpen() {
+        return shiftOpen;
+    }
+
+    public void setShiftOpen(String shiftOpen) {
+        this.shiftOpen = shiftOpen;
+    }
+
+    public String getShiftClose() {
+        return shiftClose;
+    }
+
+    public void setShiftClose(String shiftClose) {
+        this.shiftClose = shiftClose;
     }
 
     @Override

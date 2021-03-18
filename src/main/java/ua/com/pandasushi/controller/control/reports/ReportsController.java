@@ -42,6 +42,9 @@ public class ReportsController implements TabController {
     private Button inventoryReport;
 
     @FXML
+    private Button balanceReport;
+
+    @FXML
     private CheckBox fullReport;
 
     private LocalDatePicker fromPicker;
@@ -65,6 +68,11 @@ public class ReportsController implements TabController {
         purchaseReport.setOnAction(event -> {
             Calendar[] res = getSelectedDates();
             PurchaseReport.createReport(res[0], res[1]);
+        });
+
+        balanceReport.setOnAction(event -> {
+            Calendar[] res = getSelectedDates();
+            BalanceReport.createReport(res[0], res[1], fullReport.isSelected());
         });
 
         datesBox.getChildren().addAll(fromPicker);

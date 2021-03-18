@@ -664,20 +664,27 @@ public class SchedulePlanController implements TabController {
     }
 
     private void sortEmployees (List<Employee> employees) {
-        String regMarks = "^(.[СПАК])|([СПАК].)$";
+        /*String regMarks = "^(.[СПАК])|([СПАК].)$";
 
-        employees.sort((o1, o2) -> {
-            if ( !o1.getKitchen().equals(o2.getKitchen()) ) {
-                return o1.getKitchen().equals(kitchSelect.getValue().getName()) ? -1 : 1;
-            } else {
-                if (o1.getMark().matches(regMarks) == o2.getMark().matches(regMarks)) {
-                    int timeDiff = compareWorkDays(o1, o2);
-                    return timeDiff != 0 ? timeDiff : o1.getName().compareTo(o2.getName());
-                } else {
-                    return o1.getMark().matches(regMarks) ? -1 : 1;
+            employees.sort((o1, o2) -> {
+                try {
+                    if ( !o1.getKitchen().equals(o2.getKitchen()) ) {
+                        return o1.getKitchen().equals(kitchSelect.getValue().getName()) ? -1 : 1;
+                    } else {
+                        if (o1.getMark().matches(regMarks) == o2.getMark().matches(regMarks)) {
+                            int timeDiff = compareWorkDays(o1, o2);
+                            return timeDiff != 0 ? timeDiff : o1.getName().compareTo(o2.getName());
+                        } else {
+                            return o1.getMark().matches(regMarks) ? -1 : 1;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println(o1.getName() + " compare to " + o2.getName());
+                    e.printStackTrace();
                 }
-            }
-        });
+                return -1;
+            });
+        */
     }
 
     private int compareWorkDays (Employee e1, Employee e2) {

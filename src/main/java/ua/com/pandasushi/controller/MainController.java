@@ -14,6 +14,7 @@ import ua.com.pandasushi.controller.control.schedule.SchedulePlanController;
 import ua.com.pandasushi.controller.costs.product_purchase.ProductsPurchaseTabController;
 import ua.com.pandasushi.controller.costs.product_shift.ProductsShiftTabController;
 import ua.com.pandasushi.controller.kitchen.inventory.InventoryTabController;
+import ua.com.pandasushi.controller.kitchen.inventorycafe.InventoryCafeTabController;
 import ua.com.pandasushi.controller.kitchen.rozrobka.RozrobkaTabController;
 import ua.com.pandasushi.controller.order.OrderController;
 import ua.com.pandasushi.database.common.Employee;
@@ -64,6 +65,9 @@ public class MainController {
 
     @FXML
     Tab inventory;
+
+    @FXML
+    Tab inventoryCafe;
 
     @FXML
     Tab control;
@@ -120,6 +124,9 @@ public class MainController {
     private InventoryTabController inventoryTabController;
 
     @FXML
+    private InventoryCafeTabController inventoryCafeTabController;
+
+    @FXML
     private ReportsController reportsTabController;
 
     @FXML
@@ -142,10 +149,14 @@ public class MainController {
         productsPurchaseTabController.init(this);
         productsShiftTabController.init(this);
         rozrobkaTabController.init(this);
-        inventoryTabController.init(this);
+        if (GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 7)
+            inventoryCafeTabController.init(this);
+        else
+            inventoryTabController.init(this);
         reportsTabController.init(this);
         schedulePlanController.init(this);
         scheduleFactController.init(this);
+
         if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 0) {
             menuBar.setStyle("-fx-background-color: rgb(50,255,50);");
             Menu menu = new Menu("Сихів");
@@ -164,7 +175,17 @@ public class MainController {
             menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
             menuBar.getMenus().add(menu);
         }
+
+        if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 7) {
+            menuBar.setStyle("-fx-background-color: rgb(255,120,120);");
+            Menu menu = new Menu("Кафе");
+            menu.setStyle("-fx-font-weight: 800; -fx-font-size: 15px;");
+            menuBar.getMenus().add(menu);
+
+        }
         setTabAccess(GlobalPandaApp.config.getOperator());
+
+
     }
 
     private void setTabAccess (Employee e) {
@@ -177,7 +198,11 @@ public class MainController {
         list.add(delivers);
         list.add(containerPurch);
         list.add(converts);
-        //list.add(inventory);
+        if(GlobalPandaApp.config.getKitchen().getKitch_id().intValue() == 7) {
+            list.add(inventory);
+        } else {
+            list.add(inventoryCafe);
+        }
         list.add(viewOrders);
         //list.add(employeesTab);
         //list.add(schedule);
